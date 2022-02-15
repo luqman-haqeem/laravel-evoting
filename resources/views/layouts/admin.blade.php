@@ -71,6 +71,13 @@
             </a>
         </li>
 
+        <!-- Nav Item - About -->
+        <li class="nav-item {{ Nav::isRoute('voter') }}">
+            <a class="nav-link" href="{{ route('voter') }}">
+                <i class="fas fa-fw fa-hands-helping"></i>
+                <span>{{ __('Voters') }}</span>
+            </a>
+        </li>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 

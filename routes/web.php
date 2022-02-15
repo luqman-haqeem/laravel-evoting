@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VoterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::put('/profile', 'ProfileController@update')->name('profile.update');
+
+// Route::resource('voters', VoterController::class);
+Route::get('/voters', [VoterController::class, 'index'])->name('voter');
+
 
 Route::get('/about', function () {
     return view('about');
