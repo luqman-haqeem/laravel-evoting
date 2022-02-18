@@ -24,9 +24,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::put('/profile', 'ProfileController@update')->name('profile.update');
+Route::post('/voters/import', 'VoterController@import')->name('voters.import');
 
 // Route::resource('voters', VoterController::class);
-Route::get('/voters', [VoterController::class, 'index'])->name('voter');
+// Route::get('/voters', [VoterController::class, 'index'])->name('voter');
+Route::resource('voters', 'VoterController');
 
 
 Route::get('/about', function () {
