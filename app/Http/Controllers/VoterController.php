@@ -24,7 +24,7 @@ class VoterController extends Controller
             //...
         ];
 
-        return view('voter', compact('widget'));
+        return view('voter/index', compact('widget'));
 
     }
 
@@ -36,6 +36,14 @@ class VoterController extends Controller
     public function create()
     {
         //
+        $users = User::count();
+
+        $widget = [
+            'users' => $users,
+            //...
+        ];
+
+        return view('voter/create', compact('widget'));
     }
 
     /**
@@ -45,6 +53,11 @@ class VoterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    {
+        //
+    }
+
+    public function import(Request $request )
     {
         //
     }
