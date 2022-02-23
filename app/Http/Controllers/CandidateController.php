@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Candidate;
+use App\User;
+
 use Illuminate\Http\Request;
 
 class CandidateController extends Controller
@@ -15,6 +17,14 @@ class CandidateController extends Controller
     public function index()
     {
         //
+        $users = User::count();
+
+        $widget = [
+            'users' => $users,
+            //...
+        ];
+
+        return view('candidate/index', compact('widget'));
     }
 
     /**
@@ -25,6 +35,14 @@ class CandidateController extends Controller
     public function create()
     {
         //
+        $users = User::count();
+
+        $widget = [
+            'users' => $users,
+            //...
+        ];
+
+        return view('candidate/create', compact('widget'));
     }
 
     /**
