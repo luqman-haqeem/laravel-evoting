@@ -74,11 +74,19 @@
             </a>
         </li>
 
-        <!-- Nav Item - About -->
-        <li class="nav-item {{ Nav::isRoute('voter') }}">
+        <!-- Nav Item - Voter -->
+        <li class="nav-item {{ Nav::isRoute('voters.index') }}">
             <a class="nav-link" href="{{ route('voters.index') }}">
                 <i class="fas fa-fw fa-hands-helping"></i>
                 <span>{{ __('Voters') }}</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Candidate -->
+        <li class="nav-item {{ Nav::isRoute('candidates.index') }}">
+            <a class="nav-link" href="{{ route('candidates.index') }}">
+                <i class="fas fa-fw fa-hands-helping"></i>
+                <span>{{ __('Candidate') }}</span>
             </a>
         </li>
         <!-- Divider -->
@@ -86,7 +94,7 @@
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+           ` <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
 
     </ul>
@@ -296,7 +304,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Alejandro RH 2020</span>
+                    <span>Copyright &copy; Evoting 2020</span>
                 </div>
             </div>
         </footer>
@@ -349,6 +357,7 @@
     $('.Mydatatable').DataTable();
 } );
 </script>
+@yield('javascript')
 
 </body>
 </html>
