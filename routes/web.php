@@ -29,6 +29,7 @@ Route::post('/voters/import', 'VoterController@import')->name('voters.import');
 Route::resource('voters', 'VoterController');
 
 Route::resource('candidates', 'CandidateController');
+Route::resource('elections', 'ElectionController');
 
 
 Route::get('/about', function () {
