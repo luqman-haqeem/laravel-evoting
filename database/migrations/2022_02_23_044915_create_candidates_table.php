@@ -23,8 +23,8 @@ class CreateCandidatesTable extends Migration
             $table->string('section',100);
             $table->text('motto');
             $table->string('image',100);
+            $table->softDeletes();
             $table->timestamps();
-            $table->integer('active');
 
         });
     }

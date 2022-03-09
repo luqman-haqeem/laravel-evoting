@@ -17,9 +17,9 @@ class CreateVotersTable extends Migration
             $table->id();
             $table->string('matric_number');
             $table->string('name');
-            $table->string('faculty');            
+            $table->string('faculty'); 
+            $table->softDeletes();           
             $table->timestamps();
-            $table->integer('active');
 
         });
     }

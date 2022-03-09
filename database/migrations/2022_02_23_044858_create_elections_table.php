@@ -18,7 +18,7 @@ class CreateElectionsTable extends Migration
             $table->string('name', 100);
             $table->dateTime('start_at', $precision = 0);
             $table->dateTime('end_at', $precision = 0);
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }
