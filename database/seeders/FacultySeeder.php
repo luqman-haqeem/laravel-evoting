@@ -1,30 +1,21 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Faculty;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
-use App\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-class DatabaseSeeder extends Seeder
+class FacultySeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-    //     User::create([
-    //         'name' => 'Admin',
-    //         'last_name' => 'Admin',
-    //         'email' => 'admin@admin.com',
-    //         'email_verified_at' => now(),
-    //         'password' => Hash::make('password'), // password
-    //         'remember_token' => Str::random(10),
-    //    ]);
-    
+        //create 5 main faculty
         Faculty::create([
             'name' => 'FPM',
             'fullname' => 'FAKULTI PENGURUSAN DAN MUAMALAH',
@@ -45,8 +36,5 @@ class DatabaseSeeder extends Seeder
             'name' => 'FSU',
             'fullname' => 'FAKULTI SYARIAH DAN UNDANG-UNDANG',
         ]);
-
-        // $this->call(UsersTableSeeder::class);
-        // $this->call(FacultySeeder::class);
     }
 }

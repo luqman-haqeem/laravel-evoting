@@ -22,7 +22,7 @@ class CreateCandidatesTable extends Migration
             $table->foreign('voter_id')->references('id')->on('voters');
             $table->string('section',100);
             $table->text('motto');
-            $table->string('image',100);
+            // $table->string('image',100);
             $table->softDeletes();
             $table->timestamps();
 
