@@ -140,6 +140,7 @@ class ElectionController extends Controller
     public function destroy(Election $election)
     {
         //
-        echo "delete";
+        $election->delete();
+        return redirect()->route('elections.index')->with('success','Election Succesfully Deleted');
     }
 }

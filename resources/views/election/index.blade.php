@@ -46,7 +46,7 @@
                             <td>{{ $election->start_at }}</td>
                             <td>{{ $election->end_at }}</td>
                             <td>
-                                <a href="{{ route('candidates.index') }}" class="btn btn-warning btn-sm">Candidate</a>
+                                <a href="{{ route('candidates.index',$election->id) }}" class="btn btn-warning btn-sm">Candidate</a>
                                 <a href="" class="btn btn-primary btn-sm">End</a>
                                 <a href="" class="btn btn-primary btn-sm">Result</a>
                                 <a href="{{ route('elections.edit',$election->id) }}" class="btn btn-info btn-sm">Update</a>
@@ -62,7 +62,7 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
+            </div>`
         </div>
 
 
