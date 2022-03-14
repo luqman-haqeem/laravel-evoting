@@ -31,7 +31,8 @@
                 <h6 class="m-0 font-weight-bold text-primary"> Add Voter</h6>
             </div>
             <div class="card-body">
-                <form action="" method="POST">
+                <form action="{{ route('voters.store') }}" method="POST">
+                    @csrf
                     <div class="form-group">
                         <label for="voter_name">Voter Name</label>
                         <input type="text" class="form-control" id="voter_name" name="voter_name" aria-describedby="voter_name_help" placeholder="Enter Voter Name">
@@ -45,6 +46,9 @@
                         <label for="faculty">Faculty</label>
                         <select name="faculty" id="faculty" class="form-control">
                             <option value="0" selected disabled>Select Faculty</option>
+                            @foreach ($facultys as $faculty)
+                            <option value="{{ $faculty->id }}" >{{$faculty->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -65,9 +69,9 @@
                     <div class="form-group">
                         <input type="file" class="form-control-file" name="import_voter" id="import_voter">
                         <small id="import_voter" class="form-text text-muted">only csv file are allowed</small>
-                        
+
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

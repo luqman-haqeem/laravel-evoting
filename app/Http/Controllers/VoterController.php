@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Faculty;
 use App\Voter;
 use App\User;
 
@@ -18,13 +19,14 @@ class VoterController extends Controller
     {
         //
         $users = User::count();
+        $voters = Voter::all();
 
         $widget = [
             'users' => $users,
             //...
         ];
 
-        return view('voter/index', compact('widget'));
+        return view('voter/index', compact('voters'));
 
     }
 
@@ -37,13 +39,14 @@ class VoterController extends Controller
     {
         //
         $users = User::count();
+        $facultys = Faculty::all();
 
         $widget = [
             'users' => $users,
             //...
         ];
 
-        return view('voter/create', compact('widget'));
+        return view('voter/create', compact('facultys'));
     }
 
     /**
@@ -55,6 +58,19 @@ class VoterController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request,[
+            'voter_name' => 'required',
+            'matric_number' => 'required',
+            'faculty' => 'required'
+        ]);
+
+        $voter = new Voter();
+        $voter->name = $request->voter_name;
+        $voter->matric_number = $request->matric_number;
+        $voter->faculties_id	 = $request->faculty;
+        $voter->save();
+
+        return redirect(route('voters.index'))->with('success','Voter Successfully Added');
     }
 
     public function import(Request $request )
@@ -76,12 +92,22 @@ class VoterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * 
      * @param  \App\Voter  $voter
      * @return \Illuminate\Http\Response
      */
     public function edit(Voter $voter)
     {
         //
+        $facultys = Faculty::all();
+        $voter_faculty = Voter::find($voter->id)->faculty;
+        $data = [
+            'facultys' => $facultys,
+            'voter' => $voter,
+            'voter_faculty' => $voter,
+        ];
+        dd($data);
+        return view('voter/edit', compact('data'));
     }
 
     /**
@@ -94,6 +120,21 @@ class VoterController extends Controller
     public function update(Request $request, Voter $voter)
     {
         //
+        $this->validate($request,[
+            'voter_name' => 'required',
+            'matric_number' => 'required',
+            'faculty' => 'required'
+        ]);
+
+        $voter->update(
+            [
+                'name' => $request->name,
+                'matric_number' => $request->matric_number,
+                'faculties_id	' => $request->faculty,
+            ]
+        );
+        return redirect(route('voters.index'))->with('success','Voter Successfully Updated');
+
     }
 
     /**
@@ -105,5 +146,7 @@ class VoterController extends Controller
     public function destroy(Voter $voter)
     {
         //
+        $voter->delete();
+        return redirect()->route('voters.index')->with('success','Voter Succesfully Deleted');
     }
 }
