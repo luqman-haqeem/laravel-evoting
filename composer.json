@@ -16,7 +16,8 @@
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.0"
+        "laravel/ui": "^3.0",
+        "spatie/laravel-medialibrary": "^7.0.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
@@ -40,7 +41,7 @@
             "App\\": "app/"
         },
         "classmap": [
-            "database/seeds",
+            "database/seeders",
             "database/factories"
         ]
     },
