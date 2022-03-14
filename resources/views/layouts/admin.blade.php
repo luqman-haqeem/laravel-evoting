@@ -24,6 +24,12 @@
 
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.png') }}" rel="icon" type="image/png">
+
+    <!-- DropZone -->
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+
+    @yield('head-script')
+    
 </head>
 <body id="page-top">
 
@@ -48,6 +54,13 @@
             <a class="nav-link" href="{{ route('home') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>{{ __('Dashboard') }}</span></a>
+        </li>
+
+        <!-- Nav Item - Election -->
+        <li class="nav-item {{ Nav::isRoute('elections.index') }}">
+            <a class="nav-link" href="{{ route('elections.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>{{ __('Elections') }}</span></a>
         </li>
 
         <!-- Divider -->
@@ -82,13 +95,7 @@
             </a>
         </li>
 
-        <!-- Nav Item - Candidate -->
-        <li class="nav-item {{ Nav::isRoute('candidates.index') }}">
-            <a class="nav-link" href="{{ route('candidates.index') }}">
-                <i class="fas fa-fw fa-hands-helping"></i>
-                <span>{{ __('Candidate') }}</span>
-            </a>
-        </li>
+        
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
@@ -351,13 +358,15 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.11.4/b-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/datatables.min.js"></script>
+<!-- DropZone -->
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
 <script>
     $(document).ready( function () {
     $('.Mydatatable').DataTable();
 } );
 </script>
-@yield('javascript')
+@stack('scripts')
 
 </body>
 </html>

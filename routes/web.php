@@ -28,7 +28,16 @@ Route::put('/profile', 'ProfileController@update')->name('profile.update');
 Route::post('/voters/import', 'VoterController@import')->name('voters.import');
 Route::resource('voters', 'VoterController');
 
-Route::resource('candidates', 'CandidateController');
+Route::get('/elections/{election}/candidates/','CandidateController@index')->name('candidates.index');
+Route::post('/elections/{election}/candidates/','CandidateController@store')->name('candidates.store');
+Route::get('/elections/{election}/candidates/create','CandidateController@create')->name('candidates.create');
+Route::get('/elections/{election}/candidates/{candidate}','CandidateController@edit')->name('candidates.edit');
+Route::put('/elections/{election}/candidates/{candidate}','CandidateController@update')->name('candidates.update');
+Route::delete('/elections/{election}/candidates/{candidate}','CandidateController@destroy')->name('candidates.delete');
+
+Route::post('/upload','CandidateController@uploadimage');
+
+// Route::resource('candidates', 'CandidateController');
 Route::resource('elections', 'ElectionController');
 
 
