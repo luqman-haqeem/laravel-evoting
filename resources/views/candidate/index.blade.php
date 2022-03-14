@@ -29,7 +29,7 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Candidate</h6>
-                    <a href="{{ route('candidates.create') }}" class="btn btn-success btn-sm">Add Candidate</a>
+                    <a href="{{ route('candidates.create',$data['election']) }}" class="btn btn-success btn-sm">Add Candidate</a>
                 </div>
                 <div class="card-body">
                     <table class="table Mydatatable">
@@ -41,16 +41,19 @@
                             <th>Action</th>
                         </thead>
                         <tbody>
+                            @foreach($data['candidates'] as $candidate)
                             <tr>
                                 <td>Ali</td>
                                 <td>11</td>
                                 <td>FSTM</td>
                                 <td>General</td>
                                 <td>
-                                    <a href="{{'candidates.edit'}}" class="btn btn-info btn-sm">Update</a>
-                                    <a href="{{'candidates.delete'}}" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="{{route('candidates.edit',['election' => $data['election'], 'candidate' => $candidate->id])}}" class="btn btn-info btn-sm">Update</a>
+                                    <a href="{{route('candidates.delete',['election' => $data['election'], 'candidate' => $candidate->id])}}" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>

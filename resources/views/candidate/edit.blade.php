@@ -28,19 +28,20 @@
         <!-- Project Card Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Candidate</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Edit Candidate</h6>
             </div>
             <div class="card-body">
-                <form action="{{route(candidates.update)}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('candidates.update',['election' => $data['election'], 'candidate' => $data['candidate']->id] )}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="_method" value="PUT">
                     <div class="form-group">
                         <label for="matric_number">Matric Number</label>
-                        <select name="matric_number" id="matric_number" readonly>
-                            <option value="">Select Matric Number</option>
-                        </select>
+                        <input type="text" name="matric_number" id="matric_number" value="{{$data['voter_id']->matric_number}}" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label for="candidate_section">Section</label>
                         <select name="candidate_section" id="candidate_section" class="form-control">
+                            <option value="{{$data['candidate']->section}}" selected>{{$data['faculty']->name}}</option>
                             <option value="1">General</option>
                             <option value="2">Faculty</option>
                         </select>
