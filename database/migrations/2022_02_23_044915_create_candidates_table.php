@@ -17,10 +17,11 @@ class CreateCandidatesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('election_id');
             $table->unsignedBigInteger('voter_id');
+            $table->unsignedBigInteger('section_id');
 
             $table->foreign('election_id')->references('id')->on('elections');
             $table->foreign('voter_id')->references('id')->on('voters');
-            $table->string('section',100);
+            // $table->foreign('sections_id')->references('id')->on('sections');
             $table->text('motto');
             // $table->string('image',100);
             $table->softDeletes();
