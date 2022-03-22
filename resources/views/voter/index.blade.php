@@ -44,7 +44,7 @@
                         <tr>
                             <td>{{$voter->matric_number}}</td>
                             <td>{{$voter->name}}</td>
-                            <td>{{$voter->faculty}}</td>
+                            <td>{{$voter->faculty->name}}</td>
                             <td>
                                 <a href="{{ route('voters.edit', $voter->id) }}" class="btn btn-info btn-sm">Update</a>
                                 <form action="{{ route('voters.destroy', $voter->id) }}" method="POST">
