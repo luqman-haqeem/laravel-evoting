@@ -16,7 +16,8 @@ class CreateVotersTable extends Migration
         Schema::create('voters', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('faculties_id');
-            // $table->foreign('faculties_id')->references('id')->on('faculties');
+            $table->unsignedBigInteger('election_id');
+            // $table->foreign('election_id')->references('id')->on('election');
             $table->string('matric_number');
             $table->string('name');
             
