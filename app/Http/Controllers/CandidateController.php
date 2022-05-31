@@ -6,9 +6,11 @@ use App\Candidate;
 use App\User;
 use App\Voter;
 use App\Election;
+use App\Section;
 use App\TemporaryImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Input\Input;
 
 class CandidateController extends Controller
 {
@@ -21,7 +23,8 @@ class CandidateController extends Controller
     {
         //
         $users = User::count();
-        $candidates = Candidate::all();
+        // $candidates = Candidate::all();
+        $candidates = Candidate::whereElectionId($election)->get();
 
         $data = [
             'users' => $users,
@@ -77,7 +80,7 @@ class CandidateController extends Controller
         $candidate = new Candidate();
         $candidate->election_id = $election->id;
         $candidate->voter_id = $request->matric_number;
-        $candidate->section = $request->candidate_section;
+        $candidate->section_id = $request->candidate_section;
         $candidate->motto = $request->candidate_motto;
         $candidate->save();
 
@@ -122,17 +125,20 @@ class CandidateController extends Controller
     {
         //
         $users = User::count();
-        $voter_Id = Candidate::find($candidate->voter_id)->voterId;
-        $faculty = Voter::find($candidate->voter_id)->faculty;
+        // dd($candidate->voter_id);
+        // $voter_Id = Candidate::find($candidate->voter_id)->voterId;
+        // $section = Section::find($candidate->section_id)->section;
+        $imageUrl = $candidate->getMedia('candidate')->first()->getUrl();
+        $image_detail = $candidate->getMedia('candidate')->first();
 
         $data = [
             'users' => $users,
             'candidate' => $candidate,
-            'voter_id' => $voter_Id,
+            'imageUrl' => $imageUrl,
             'election' => $election,
-            'faculty' => $faculty,
+            // 'faculty' => $section,
         ];
-
+        // dd($data[');
         return view('candidate/edit', compact('data'));
 
     }
@@ -155,9 +161,11 @@ class CandidateController extends Controller
      * @param  \App\Candidate  $candidate
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Candidate $candidate)
+    public function destroy(Election $election ,Candidate $candidate)
     {
         //
+        $candidate->delete();
+        return redirect()->route('candidate.index',$election)->with('success','Candidate Succesfully Deleted');
     }
     public function uploadimage(Request $request)
     {
@@ -178,5 +186,22 @@ class CandidateController extends Controller
 
         return '';
 
+    }
+    public function getImage()
+    {
+
+        $id = $_GET['load'];
+        $cadidate_detail = Candidate::find($id);
+        $image = $cadidate_detail->getMedia('candidate')->first();
+        $imageUrl = $cadidate_detail->getMedia('candidate')->first()->getUrl();
+        // dd($imageUrl);
+        $file_name = array(
+            'file_name' => $image->file_name
+        );
+        return response($file_name)->withHeaders([
+            'Content-disposition' => 'attachment; filename=' . $image->file_name,
+            'Access-Control-Expose-Headers' => 'Content-Disposition',
+            'Content-Type' => $image->mimetype,
+          ]);
     }
 }

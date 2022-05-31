@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('main-content')
+
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800">{{ __('Add Candidate') }}</h1>
 
@@ -57,8 +58,9 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="candidate_image">Image</label>
-                            <input type="file" name="candidate_image" id="candidate_image" class="form-control-file">
+                            <label for="candidate_image">Candidate Image</label>
+                            <input type="file" name="candidate_image" id="candidate_image" class="filepond"
+                                accept="image/png, image/jpeg, image/gif">
                             @error('candidate_image')
                                 <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                             @enderror
@@ -74,19 +76,51 @@
 
         @push('scripts')
             <script>
-                const inputElement = document.querySelector('input[id="candidate_image"]');
-                const pond = FilePond.create(inputElement);
+                // FilePond.registerPlugin(FilePondPluginImagePreview);
+
+                // const inputElement = document.querySelector('input[id="candidate_image"]');
+                // // create(inputElement, {
+                // //     // Only accept images
+                // //     acceptedFileTypes: ['image/*'],
+                // // });
+                // const pond = FilePond.create(inputElement);
                 FilePond.setOptions({
                     server: {
-                        url:'/upload',
-                        headers:{
-                            'X-CSRF-TOKEN': '{{csrf_token()}}'
+                        url: '/upload',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     }
                 });
+
+                FilePond.registerPlugin(
+                    FilePondPluginFileValidateType,
+                    FilePondPluginImageExifOrientation,
+                    FilePondPluginImagePreview,
+                    FilePondPluginImageCrop,
+                    FilePondPluginImageResize,
+                    FilePondPluginImageTransform,
+                    FilePondPluginImageEdit
+                );
+
+                // Select the file input and use 
+                // create() to turn it into a pond
+                FilePond.create(
+                    document.querySelector('input[id="candidate_image"]'), {
+                        labelIdle: `Drag & Drop your picture or <span class="filepond--label-action">Browse</span>`,
+                        imagePreviewHeight: 170,
+                        imageCropAspectRatio: '1:1',
+                        imageResizeTargetWidth: 200,
+                        imageResizeTargetHeight: 200,
+                        stylePanelLayout: 'compact circle',
+                        styleLoadIndicatorPosition: 'center bottom',
+                        styleProgressIndicatorPosition: 'right bottom',
+                        styleButtonRemoveItemPosition: 'left bottom',
+                        styleButtonProcessItemPosition: 'right bottom',
+                    }
+                );
             </script>
         @endpush
-
 
     </div>
 @endsection
