@@ -43,10 +43,10 @@
                         <tbody>
                             @foreach($data['candidates'] as $candidate)
                             <tr>
-                                <td>Ali</td>
-                                <td>11</td>
-                                <td>FSTM</td>
-                                <td>General</td>
+                                <td>{{$candidate->detail->name}}</td>
+                                <td>{{$candidate->detail->matric_number}}</td>
+                                <td>{{$candidate->detail->faculty->name}}</td>
+                                <td>{{$candidate->section->name}}</td>
                                 <td>
                                     <a href="{{route('candidates.edit',['election' => $data['election'], 'candidate' => $candidate->id])}}" class="btn btn-info btn-sm">Update</a>
                                     <a href="{{route('candidates.delete',['election' => $data['election'], 'candidate' => $candidate->id])}}" class="btn btn-danger btn-sm">Delete</a>
