@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Election;
 use App\Faculty;
 use App\Voter;
 use App\User;
@@ -15,7 +16,7 @@ class VoterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Election $election)
     {
         //
         $users = User::count();
@@ -26,7 +27,7 @@ class VoterController extends Controller
             //...
         ];
 
-        return view('voter/index', compact('voters'));
+        return view('voter/index', compact('voters','election'));
 
     }
 
@@ -35,7 +36,7 @@ class VoterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Election $election)
     {
         //
         $users = User::count();
@@ -46,7 +47,7 @@ class VoterController extends Controller
             //...
         ];
 
-        return view('voter/create', compact('facultys'));
+        return view('voter/create', compact('facultys','election'));
     }
 
     /**
@@ -55,7 +56,7 @@ class VoterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Election $election)
     {
         //
         $this->validate($request,[
@@ -65,15 +66,16 @@ class VoterController extends Controller
         ]);
 
         $voter = new Voter();
+        $voter->election_id = $election->id;
         $voter->name = $request->voter_name;
         $voter->matric_number = $request->matric_number;
-        $voter->faculties_id	 = $request->faculty;
+        $voter->faculties_id  = $request->faculty;
         $voter->save();
 
-        return redirect(route('voters.index'))->with('success','Voter Successfully Added');
+        return redirect(route('voters.index',$election->id))->with('success','Voter Successfully Added');
     }
 
-    public function import(Request $request )
+    public function import(Request $request ,Election $election)
     {
         //
     }
@@ -96,18 +98,13 @@ class VoterController extends Controller
      * @param  \App\Voter  $voter
      * @return \Illuminate\Http\Response
      */
-    public function edit(Voter $voter)
+    public function edit(Election $election, Voter $voter)
     {
         //
         $facultys = Faculty::all();
-        $voter_faculty = Voter::find($voter->id)->faculty;
-        $data = [
-            'facultys' => $facultys,
-            'voter' => $voter,
-            'voter_faculty' => $voter,
-        ];
-        dd($data);
-        return view('voter/edit', compact('data'));
+
+        // dd($data);
+        return view('voter/edit', compact('election','voter','facultys'));
     }
 
     /**
@@ -117,7 +114,7 @@ class VoterController extends Controller
      * @param  \App\Voter  $voter
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Voter $voter)
+    public function update(Request $request, Election $election, Voter $voter)
     {
         //
         $this->validate($request,[
@@ -125,15 +122,17 @@ class VoterController extends Controller
             'matric_number' => 'required',
             'faculty' => 'required'
         ]);
-
         $voter->update(
             [
-                'name' => $request->name,
+                'name' => $request->voter_name,
                 'matric_number' => $request->matric_number,
                 'faculties_id	' => $request->faculty,
             ]
+
         );
-        return redirect(route('voters.index'))->with('success','Voter Successfully Updated');
+        dd($request);
+
+        return redirect(route('voters.index',$election->id))->with('success','Voter Successfully Updated');
 
     }
 
@@ -143,10 +142,10 @@ class VoterController extends Controller
      * @param  \App\Voter  $voter
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Voter $voter)
+    public function destroy(Election $election,Voter $voter)
     {
         //
         $voter->delete();
-        return redirect()->route('voters.index')->with('success','Voter Succesfully Deleted');
+        return redirect()->route('voters.index',$election->id)->with('success','Voter Succesfully Deleted');
     }
 }

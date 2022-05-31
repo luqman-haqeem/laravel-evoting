@@ -29,13 +29,13 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Voter</h6>
-                <a href="{{ route('voters.create') }}" class="btn btn-success btn-sm">Add Voter</a>
+                <a href="{{ route('voters.create',$election->id) }}" class="btn btn-success btn-sm">Add Voter</a>
             </div>
             <div class="card-body">
                 <table class="table Mydatatable">
                     <thead>
-                        <th>Name</th>
                         <th>Matric Number</th>
+                        <th>Name</th>
                         <th>Faculty</th>
                         <th>Action</th>
                     </thead>
@@ -46,8 +46,8 @@
                             <td>{{$voter->name}}</td>
                             <td>{{$voter->faculty->name}}</td>
                             <td>
-                                <a href="{{ route('voters.edit', $voter->id) }}" class="btn btn-info btn-sm">Update</a>
-                                <form action="{{ route('voters.destroy', $voter->id) }}" method="POST">
+                                <a href="{{ route('voters.edit',['election' => $election, 'voter' => $voter->id]) }}" class="btn btn-info btn-sm">Update</a>
+                                <form action="{{ route('voters.destroy',['election' => $election, 'voter' => $voter->id]) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>

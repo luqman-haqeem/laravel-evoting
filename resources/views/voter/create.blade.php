@@ -31,7 +31,7 @@
                 <h6 class="m-0 font-weight-bold text-primary"> Add Voter</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('voters.store') }}" method="POST">
+                <form action="{{ route('voters.store',$election->id) }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="voter_name">Voter Name</label>
@@ -65,7 +65,7 @@
                 <h6 class="m-0 font-weight-bold text-primary"> Import Voter</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('voters.import') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('voters.import','election->id') }}" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="file" class="form-control-file" name="import_voter" id="import_voter">
                         <small id="import_voter" class="form-text text-muted">only csv file are allowed</small>

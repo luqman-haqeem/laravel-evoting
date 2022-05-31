@@ -31,26 +31,35 @@
                 <h6 class="m-0 font-weight-bold text-primary"> Add Voter</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('voters.update',$data['voter']->id) }}" method="POST">
+                <form action="{{ route('voters.update',['election' => $election->id,'voter'=> $voter->id]) }}" method="POST">
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
                     <div class="form-group">
                         <label for="voter_name">Voter Name</label>
-                        <input type="text" class="form-control" id="voter_name" name="voter_name" aria-describedby="voter_name_help" value="{{$data['voter']->voter_name}}" placeholder="Enter Voter Name">
+                        <input type="text" class="form-control" id="voter_name" name="voter_name" aria-describedby="voter_name_help" value="{{$voter->name}}" placeholder="Enter Voter Name">
                         <!-- <small id="voter_name_help" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                     </div>
+                    @error('voter_name')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
                     <div class="form-group">
                         <label for="matric_number">Matric Number</label>
-                        <input type="text" class="form-control" id="matric_number" name="matric_number" value="{{$data['voter']->matric_number}}" placeholder="Matric Number" disabled>
+                        <input type="text" class="form-control" id="matric_number" name="matric_number" value="{{$voter->matric_number}}" placeholder="Matric Number" readonly>
                     </div>
+                    @error('matric_number')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
                     <div class="form-group">
                         <label for="faculty">Faculty</label>
                         <select name="faculty" id="faculty" class="form-control">
-                            <option value="{{$data['voter']->faculty}}" selected>{{$data['voter']->faculty}}</option>
-                            @foreach ($data['facultys'] as $faculty)
+                            <option value="{{$voter->faculty->id}}" selected>{{$voter->faculty->name}}</option>
+                            @foreach ($facultys as $faculty)
                             <option value="{{ $faculty->id }}" >{{$faculty->name}}</option>
                             @endforeach                            
                         </select>
+                        @error('faculty')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
