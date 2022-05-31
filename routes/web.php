@@ -25,9 +25,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::put('/profile', 'ProfileController@update')->name('profile.update');
 
-Route::post('/voters/import', 'VoterController@import')->name('voters.import');
+// Route::post('/voters/import', 'VoterController@import')->name('voters.import');
 Route::resource('voters', 'VoterController');
 
+// Candidate
 Route::get('/elections/{election}/candidates/','CandidateController@index')->name('candidates.index');
 Route::post('/elections/{election}/candidates/','CandidateController@store')->name('candidates.store');
 Route::get('/elections/{election}/candidates/create','CandidateController@create')->name('candidates.create');
@@ -35,7 +36,15 @@ Route::get('/elections/{election}/candidates/{candidate}','CandidateController@e
 Route::put('/elections/{election}/candidates/{candidate}','CandidateController@update')->name('candidates.update');
 Route::delete('/elections/{election}/candidates/{candidate}','CandidateController@destroy')->name('candidates.delete');
 
-Route::post('/upload','CandidateController@uploadimage');
+// Voter
+Route::get('/elections/{election}/voters/','VoterController@index')->name('voters.index');
+Route::post('/elections/{election}/voters/','VoterController@store')->name('voters.store');
+Route::get('/elections/{election}/voters/create','VoterController@create')->name('voters.create');
+Route::get('/elections/{election}/voters/{voter}','VoterController@edit')->name('voters.edit');
+Route::put('/elections/{election}/voters/{voter}','VoterController@update')->name('voters.update');
+Route::delete('/elections/{election}/voters/{voter}','VoterController@destroy')->name('voters.destroy');
+Route::post('/elections/{election}/voters/import', 'VoterController@import')->name('voters.import');
+
 
 // Route::resource('candidates', 'CandidateController');
 Route::resource('elections', 'ElectionController');
