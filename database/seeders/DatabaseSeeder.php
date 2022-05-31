@@ -87,10 +87,12 @@ class DatabaseSeeder extends Seeder
 
         // factory(App\Voter::class, 100)->create();
         // $this->call(UsersTableSeeder::class);
+        $this->call(ElectionSeeder::class);
+
         $this->call(FacultySeeder::class);
         $this->call(VoterSeedeer::class);
         $this->call(SectionSeeder::class);
-        $this->call(UserSeeder::class);
+        // $this->call(UserSeeder::class);
 
     }
 }
