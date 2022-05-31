@@ -12,10 +12,16 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 class Candidate extends Model implements HasMedia
 {
     use HasFactory,SoftDeletes,HasMediaTrait;
-
-    public function voterId()
+    protected $fillable = [
+        'election_id', 'voter_id', 'section_id', 'motto',
+    ];
+    public function detail()
     {
         return $this->belongsTo(Voter::class,'voter_id');
+    }
+    public function section()
+    {
+        return $this->belongsTo(Section::class,'section_id');
     }
 }
 

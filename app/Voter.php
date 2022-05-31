@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Voter extends Model
 {
     use HasFactory,SoftDeletes;
-    
+
+    protected $fillable = [
+        'voter_name', 'matric_number', 'faculty'
+    ];
     public function faculty()
     {
         return $this->belongsTo(Faculty::class,'faculties_id');
