@@ -29,7 +29,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Voter</h6>
-                <a href="{{ route('voters.create',$election->id) }}" class="btn btn-success btn-sm">Add Voter</a>
+                <a href="{{ route('voters.create',$data['election']->id) }}" class="btn btn-success btn-sm">Add Voter</a>
             </div>
             <div class="card-body">
                 <table class="table Mydatatable">
@@ -40,14 +40,14 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        @foreach($voters as $voter)
+                        @foreach($data['voters'] as $voter)
                         <tr>
                             <td>{{$voter->matric_number}}</td>
                             <td>{{$voter->name}}</td>
                             <td>{{$voter->faculty->name}}</td>
                             <td>
-                                <a href="{{ route('voters.edit',['election' => $election, 'voter' => $voter->id]) }}" class="btn btn-info btn-sm">Update</a>
-                                <form action="{{ route('voters.destroy',['election' => $election, 'voter' => $voter->id]) }}" method="POST">
+                                <a href="{{ route('voters.edit',['election' => $data['election'], 'voter' => $voter->id]) }}" class="btn btn-info btn-sm">Update</a>
+                                <form action="{{ route('voters.destroy',['election' => $data['election'], 'voter' => $voter->id]) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>

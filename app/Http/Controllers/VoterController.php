@@ -22,12 +22,12 @@ class VoterController extends Controller
         $users = User::count();
         $voters = Voter::all();
 
-        $widget = [
+        $data = [
             'users' => $users,
-            //...
+            'election' => $election,
+            'voters' => $voters,
         ];
-
-        return view('voter/index', compact('voters','election'));
+        return view('voter/index', compact('data'));
 
     }
 

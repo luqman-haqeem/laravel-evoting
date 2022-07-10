@@ -46,16 +46,15 @@
                             <td>{{ $election->start_at }}</td>
                             <td>{{ $election->end_at }}</td>
                             <td>
-                                <a href="{{ route('candidates.index',$election->id) }}" class="btn btn-warning btn-sm">Candidate</a>
-                                <a href="" class="btn btn-primary btn-sm">End</a>
-                                <a href="" class="btn btn-primary btn-sm">Result</a>
-                                <a href="{{ route('elections.edit',$election->id) }}" class="btn btn-info btn-sm">Update</a>
+                                <a href="{{ route('elections.edit',$election->id) }}" class="btn btn-info btn-sm">Setting</a>
+                                <a href="{{ route('candidates.index',$election->id) }}" class="btn btn-primary btn-sm">View</a>
+                                <a href="" class="btn btn-success btn-sm">Lauch</a>
                                 
-                                <form  action="{{ route('elections.destroy', $election->id) }}" method="POST">
+                                {{-- <form  action="{{ route('elections.destroy', $election->id) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                </form> --}}
                                 
                             </td>
                         </tr>
