@@ -96,12 +96,13 @@ class ElectionController extends Controller
         //
         $users = User::count();
         // $election_detail = Election::find($election);
-        $widget = [
+        $data = [
             'users' => $users,
+            'election' => $election,
             //...
         ];
 
-        return view('election/edit', compact('election'));
+        return view('election/edit', compact('data'));
     }
 
     /**
