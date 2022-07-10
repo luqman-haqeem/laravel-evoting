@@ -31,21 +31,21 @@
                 <h6 class="m-0 font-weight-bold text-primary"> Add Election</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('elections.update',$election->id) }}" method="POST">
+                <form action="{{ route('elections.update',$data['election']->id) }}" method="POST">
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
                     <div class="form-group">
                         <label for="election_name">Election Name</label>
-                        <input type="text" class="form-control" id="election_name" name="election_name" aria-describedby="election_name_help" value="{{ $election->name }}" placeholder="Enter Election Name">
+                        <input type="text" class="form-control" id="election_name" name="election_name" aria-describedby="election_name_help" value="{{ $data['election']->name }}" placeholder="Enter Election Name">
                         <!-- <small id="election_name_help" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                     </div>
                     <div class="form-group">
                         <label for="election_start_at">Start At</label>
-                        <input type="datetime-local" class="form-control" id="election_start_at" name="election_start_at" value="{{date('Y-m-d\TH:i:s',strtotime($election->start_at)) }}" placeholder="Start date">
+                        <input type="datetime-local" class="form-control" id="election_start_at" name="election_start_at" value="{{date('Y-m-d\TH:i:s',strtotime($data['election']->start_at)) }}" placeholder="Start date">
                     </div>
                     <div class="form-group">
                         <label for="faculty">End At</label>
-                        <input type="datetime-local" name="election_end_at" id="election_end_at" class="form-control" value="{{date('Y-m-d\TH:i:s',strtotime($election->end_at)) }}" placeholder="End Date">
+                        <input type="datetime-local" name="election_end_at" id="election_end_at" class="form-control" value="{{date('Y-m-d\TH:i:s',strtotime($data['election']->end_at)) }}" placeholder="End Date">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
