@@ -89,6 +89,13 @@
 
             @if (!empty($data['election']))
                 
+            <!-- Nav Item - Eletion Setting -->
+            <li class="nav-item {{ Nav::isRoute('elections.edit') }}">
+                <a class="nav-link" href="{{ route('elections.edit',['election' => $data['election']]) }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{ __('Settings') }}</span></a>
+            </li>
+                
             <!-- Nav Item - Candidate -->
             <li class="nav-item {{ Nav::isRoute('candidates.index') }}">
                 <a class="nav-link" href="{{ route('candidates.index',['election' => $data['election']]) }}">
