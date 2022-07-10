@@ -19,8 +19,8 @@ class CreateCandidatesTable extends Migration
             $table->unsignedBigInteger('voter_id');
             $table->unsignedBigInteger('section_id');
 
-            $table->foreign('election_id')->references('id')->on('elections');
-            $table->foreign('voter_id')->references('id')->on('voters');
+            $table->foreign('election_id')->references('id')->on('elections')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('voter_id')->references('id')->on('voters')->onDelete('cascade')->onUpdate('cascade');
             // $table->foreign('sections_id')->references('id')->on('sections');
             $table->text('motto');
             // $table->string('image',100);
