@@ -78,6 +78,7 @@
                     <span>{{ __('Elections') }}</span></a>
             </li>
 
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -86,7 +87,25 @@
                 {{ __('Settings') }}
             </div>
 
-            <!-- Nav Item - Profile -->
+            @if (!empty($data['election']))
+                
+            <!-- Nav Item - Candidate -->
+            <li class="nav-item {{ Nav::isRoute('candidates.index') }}">
+                <a class="nav-link" href="{{ route('candidates.index',['election' => $data['election']]) }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>{{ __('Candidate') }}</span></a>
+            </li>
+
+            <!-- Nav Item - Voter -->
+            <li class="nav-item {{ Nav::isRoute('voters.index') }}">
+                <a class="nav-link" href="{{ route('voters.index',['election' => $data['election']]) }}">
+                    <i class="fas fa-fw fa-hands-helping"></i>
+                    <span>{{ __('Voters') }}</span>
+                </a>
+            </li>
+            @endif
+
+            {{-- <!-- Nav Item - Profile -->
             <li class="nav-item {{ Nav::isRoute('profile') }}">
                 <a class="nav-link" href="{{ route('profile') }}">
                     <i class="fas fa-fw fa-user"></i>
@@ -100,15 +119,9 @@
                     <i class="fas fa-fw fa-hands-helping"></i>
                     <span>{{ __('About') }}</span>
                 </a>
-            </li>
+            </li> --}}
 
-            <!-- Nav Item - Voter -->
-            <li class="nav-item {{ Nav::isRoute('voters.index') }}">
-                <a class="nav-link" href="{{ route('voters.index',1) }}">
-                    <i class="fas fa-fw fa-hands-helping"></i>
-                    <span>{{ __('Voters') }}</span>
-                </a>
-            </li>
+            
 
 
             <!-- Divider -->
