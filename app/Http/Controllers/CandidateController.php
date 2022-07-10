@@ -10,6 +10,7 @@ use App\Section;
 use App\TemporaryImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use phpDocumentor\Reflection\Element;
 use Symfony\Component\Console\Input\Input;
 
 class CandidateController extends Controller
@@ -32,7 +33,7 @@ class CandidateController extends Controller
             'election' => $election,
             //...
         ];
-
+        // dd($data['candidates']);
         return view('candidate/index', compact('data'));
     }
 
@@ -128,17 +129,16 @@ class CandidateController extends Controller
         // dd($candidate->voter_id);
         // $voter_Id = Candidate::find($candidate->voter_id)->voterId;
         // $section = Section::find($candidate->section_id)->section;
-        $imageUrl = $candidate->getMedia('candidate')->first()->getUrl();
-        $image_detail = $candidate->getMedia('candidate')->first();
+        // $imageUrl = $candidate->getMedia('candidate')->first()->getUrl();
+        // $image_detail = $candidate->getMedia('candidate')->first();
 
         $data = [
             'users' => $users,
             'candidate' => $candidate,
-            'imageUrl' => $imageUrl,
             'election' => $election,
             // 'faculty' => $section,
         ];
-        // dd($data[');
+        // dd($data);
         return view('candidate/edit', compact('data'));
 
     }
@@ -150,9 +150,25 @@ class CandidateController extends Controller
      * @param  \App\Candidate  $candidate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Candidate $candidate)
+    public function update(Request $request,Election $election, Candidate $candidate)
     {
         //
+        $this->validate($request,[
+            'matric_number' => 'required',
+            'candidate_section' => 'required',
+            'candidate_motto' => 'required',
+            // 'candidate_image' => 'required|mimes:jpeg,png,jpg,gif,svg'
+        ]);
+        // dd($request);
+
+        $candidate->election_id = $election->id;
+        // $candidate->voter_id = $request->matric_number;
+        $candidate->section_id = $request->candidate_section;
+        $candidate->motto = $request->candidate_motto;
+        $candidate->update();
+
+        return redirect(route('candidates.index',$election))->with('success','Candidate Successfully Updated');
+
     }
 
     /**
@@ -165,7 +181,7 @@ class CandidateController extends Controller
     {
         //
         $candidate->delete();
-        return redirect()->route('candidate.index',$election)->with('success','Candidate Succesfully Deleted');
+        return redirect()->route('candidates.index',$election)->with('success','Candidate Succesfully Deleted');
     }
     public function uploadimage(Request $request)
     {

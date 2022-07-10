@@ -73,7 +73,7 @@
 
 
         </div>
-
+{{-- 
         @push('scripts')
             <script>
                 // FilePond.registerPlugin(FilePondPluginImagePreview);
@@ -120,7 +120,7 @@
                     }
                 );
             </script>
-        @endpush
+        @endpush --}}
 
     </div>
 @endsection

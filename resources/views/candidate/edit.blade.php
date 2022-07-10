@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label for="candidate_section">Section</label>
                             <select name="candidate_section" id="candidate_section" class="form-control">
-                                <option value="{{ $data['candidate']->section }}" selected>
+                                <option value="{{ $data['candidate']->section_id }}" selected>
                                     {{ $data['candidate']->section->name }}</option>
                                 <option value="1">General</option>
                                 <option value="2">Faculty</option>
