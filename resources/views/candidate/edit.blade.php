@@ -37,16 +37,19 @@
                         @csrf
                         <input type="hidden" name="_method" value="PUT">
                         <div class="card-profile-image mt-4">
-                            <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" data-initial="{{ Auth::user()->name[0] }}"></figure>
+                            {{-- <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" >
+                                
+                            </figure> --}}
+                            <img class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" src="{{ url('public/Candidate/'.$data['candidate']->candidate_image) }}" alt="">
                         </div>
                         <br>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-lg-12">
                                 <div class="text-center">
                                     <button class="btn btn-primary btn-sm">Change Profile Image</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label for="matric_number">Matric Number</label>
