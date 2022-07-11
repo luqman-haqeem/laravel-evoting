@@ -28,8 +28,10 @@
         <!-- Project Card Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Election</h6>
-                <a href="{{ route('elections.create') }}" class="btn btn-success btn-sm">Add Election</a>
+                <h6 class="m-0 font-weight-bold text-primary">Election
+                <a href="{{ route('elections.create') }}" class="btn btn-success btn-sm pull-right">Add Election</a>
+
+                </h6>
             </div>
             <div class="card-body">
                 <table class="table Mydatatable">
@@ -46,9 +48,9 @@
                             <td>{{ $election->start_at }}</td>
                             <td>{{ $election->end_at }}</td>
                             <td>
-                                <a href="{{ route('elections.edit',$election->id) }}" class="btn btn-info btn-sm">Setting</a>
-                                <a href="{{ route('candidates.index',$election->id) }}" class="btn btn-primary btn-sm">View</a>
-                                <a href="" class="btn btn-success btn-sm">Lauch</a>
+                                <a href="{{ route('elections.edit',$election->id) }}" class="text-info"><i class="fas fa-cog"></i></a>
+                                <a href="{{ route('candidates.index',$election->id) }}" class="text-primary"> <i class="fas fa-eye"></i></a>
+                                <a href="" class="text-success"><i class="fas fa-rocket"></i></a>
                                 
                                 {{-- <form  action="{{ route('elections.destroy', $election->id) }}" method="POST">
                                     @method('DELETE')
