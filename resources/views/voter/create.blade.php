@@ -65,7 +65,7 @@
                 <h6 class="m-0 font-weight-bold text-primary"> Import Voter</h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('voters.import','election->id') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('voters.import',$election->id) }}" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <input type="file" class="form-control-file" name="import_voter" id="import_voter">
                         <small id="import_voter" class="form-text text-muted">only csv file are allowed</small>
@@ -78,5 +78,23 @@
         </div>
     </div>
 
+        @push('scripts')
+        <script>
+            // Set default FilePond options
+            FilePond.setOptions({
+                server: {
+                    url: "{{ config('filepond.server.url') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ @csrf_token() }}",
+                    }
+                }
+            });
+        
+            // Create the FilePond instance
+            FilePond.create(document.querySelector('input[name="import_voter"]'));
+            // FilePond.create(document.querySelector('input[name="gallery[]"]'), {chunkUploads: true});
+        </script>
+        
+        @endpush
 </div>
 @endsection
