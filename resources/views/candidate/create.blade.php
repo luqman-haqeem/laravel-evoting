@@ -36,7 +36,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="matric_number">Matric Number</label>
-                            <select name="matric_number" id="matric_number" class="form-control">
+                            <select name="matric_number" id="matric_number" class="form-control" required>
                                 <option value="">Select Matric Number</option>
                                 @foreach ($data['voters'] as $voter)
                                     <option value="{{ $voter->id }}">{{ $voter->matric_number }}</option>
@@ -45,22 +45,21 @@
                         </div>
                         <div class="form-group">
                             <label for="candidate_section">Section</label>
-                            <select name="candidate_section" id="candidate_section" class="form-control">
+                            <select name="candidate_section" id="candidate_section" class="form-control" required>
                                 <option value="1">General</option>
                                 <option value="2">Faculty</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="candidate_motto">Motto</label>
-                            <input type="text" name="candidate_motto" id="candidate_motto" class="form-control">
+                            <input type="text" name="candidate_motto" id="candidate_motto" class="form-control" required>
                             @error('candidate_motto')
                                 <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label for="candidate_image">Candidate Image</label>
-                            <input type="file" name="candidate_image" id="candidate_image" class="filepond"
-                                accept="image/png, image/jpeg, image/gif">
+                            <input type="file" name="candidate_image" id="candidate_image" class="filepond" accept="image/png, image/jpeg, image/gif" required>
                             @error('candidate_image')
                                 <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                             @enderror

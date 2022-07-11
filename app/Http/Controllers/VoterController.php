@@ -16,7 +16,7 @@ class VoterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( Election $election)
+    public function index(Election $election)
     {
         //
         $users = User::count();
@@ -28,7 +28,6 @@ class VoterController extends Controller
             'voters' => $voters,
         ];
         return view('voter/index', compact('data'));
-
     }
 
     /**
@@ -47,7 +46,7 @@ class VoterController extends Controller
             //...
         ];
 
-        return view('voter/create', compact('facultys','election'));
+        return view('voter/create', compact('facultys', 'election'));
     }
 
     /**
@@ -59,7 +58,7 @@ class VoterController extends Controller
     public function store(Request $request, Election $election)
     {
         //
-        $this->validate($request,[
+        $this->validate($request, [
             'voter_name' => 'required',
             'matric_number' => 'required',
             'faculty' => 'required'
@@ -72,12 +71,40 @@ class VoterController extends Controller
         $voter->faculties_id  = $request->faculty;
         $voter->save();
 
-        return redirect(route('voters.index',$election->id))->with('success','Voter Successfully Added');
+        return redirect(route('voters.index', $election->id))->with('success', 'Voter Successfully Added');
     }
 
-    public function import(Request $request ,Election $election)
+    public function import(Request $request, Election $election)
     {
         //
+
+        $request->validate([
+            'import_voter' => 'required|mimes:csv',
+        ]);
+
+        // Set filename
+        $uploadFilename = 'upload_' . auth()->id().'_'.date('Y_m_d');
+
+        // Move the file to permanent storage
+        // Automatic file extension set
+        $fileInfo = Filepond::field($request->avatar)
+            ->moveTo('voterUpload/' . $uploadFilename);
+
+
+
+        // $students = [];
+
+        // if (($open = fopen(storage_path() . "/students.csv", "r")) !== FALSE) {
+
+        //     while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
+        //         $students[] = $data;
+        //     }
+
+        //     fclose($open);
+        // }
+
+        // echo "<pre>";
+        // print_r($students);
     }
 
     /**
@@ -104,7 +131,7 @@ class VoterController extends Controller
         $facultys = Faculty::all();
 
         // dd($data);
-        return view('voter/edit', compact('election','voter','facultys'));
+        return view('voter/edit', compact('election', 'voter', 'facultys'));
     }
 
     /**
@@ -117,7 +144,7 @@ class VoterController extends Controller
     public function update(Request $request, Election $election, Voter $voter)
     {
         //
-        $this->validate($request,[
+        $this->validate($request, [
             'voter_name' => 'required',
             'matric_number' => 'required',
             'faculty' => 'required'
@@ -132,8 +159,7 @@ class VoterController extends Controller
         );
         dd($request);
 
-        return redirect(route('voters.index',$election->id))->with('success','Voter Successfully Updated');
-
+        return redirect(route('voters.index', $election->id))->with('success', 'Voter Successfully Updated');
     }
 
     /**
@@ -142,10 +168,10 @@ class VoterController extends Controller
      * @param  \App\Voter  $voter
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Election $election,Voter $voter)
+    public function destroy(Election $election, Voter $voter)
     {
         //
         $voter->delete();
-        return redirect()->route('voters.index',$election->id)->with('success','Voter Succesfully Deleted');
+        return redirect()->route('voters.index', $election->id)->with('success', 'Voter Succesfully Deleted');
     }
 }

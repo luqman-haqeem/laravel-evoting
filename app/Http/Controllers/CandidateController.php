@@ -70,12 +70,11 @@ class CandidateController extends Controller
     public function store(Request $request, Election $election)
     {
         //
-        // dd($request);
-        $this->validate($request,[
+        $this->validate($request, [
             'matric_number' => 'required',
             'candidate_section' => 'required',
             'candidate_motto' => 'required',
-            // 'candidate_image' => 'required|mimes:jpeg,png,jpg,gif,svg'
+            'candidate_image' => 'required|mimes:jpeg,png,jpg,gif,svg'
         ]);
 
         $candidate = new Candidate();
@@ -83,25 +82,34 @@ class CandidateController extends Controller
         $candidate->voter_id = $request->matric_number;
         $candidate->section_id = $request->candidate_section;
         $candidate->motto = $request->candidate_motto;
-        $candidate->save();
 
-        $temporaryImage = TemporaryImage::where('folder',$request->candidate_image)->first();
-       
-        if ($temporaryImage) {
-            $tempPath = 'app/public/TemporaryImage/tmp/'. $request->candidate_image . '/' . $temporaryImage->filename;
- 
-            $permanentImagePath = 'app/public/candidates/'.$temporaryImage->filename;
-            $candidate->addMedia(storage_path($tempPath))->toMediaCollection('candidate');
-            // Storage::move($tempPath , $permanentImagePath);
+        // $temporaryImage = TemporaryImage::where('folder',$request->candidate_image)->first();
+        // if ($temporaryImage) {
+        //     $tempPath = 'app/public/TemporaryImage/tmp/'. $request->candidate_image . '/' . $temporaryImage->filename;
 
-            // $candidate->image = $permanentImagePath;
+        //     $permanentImagePath = 'app/public/candidates/'.$temporaryImage->filename;
+        //     $candidate->addMedia(storage_path($tempPath))->toMediaCollection('candidate');
+        //     // Storage::move($tempPath , $permanentImagePath);
 
-            rmdir(storage_path('app/public/TemporaryImage/tmp/'. $request->candidate_image));
-            $temporaryImage->delete();
+        //     // $candidate->image = $permanentImagePath;
+
+        //     rmdir(storage_path('app/public/TemporaryImage/tmp/'. $request->candidate_image));
+        //     $temporaryImage->delete();
+        // }
+        if ($request->file('candidate_image')) {
+            $file = $request->file('candidate_image');
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $file->move(public_path('public/Candidate'), $filename);
+            $data['image'] = $filename;
+            $candidate->candidate_image = $filename;
         }
 
 
-        return redirect(route('candidates.index',$election))->with('success','Candidate Successfully Added');
+        $candidate->save();
+
+
+
+        return redirect(route('candidates.index', $election))->with('success', 'Candidate Successfully Added');
     }
 
     /**
@@ -113,7 +121,7 @@ class CandidateController extends Controller
     public function show(Candidate $candidate)
     {
         //
-        
+
     }
 
     /**
@@ -122,7 +130,7 @@ class CandidateController extends Controller
      * @param  \App\Candidate  $candidate
      * @return \Illuminate\Http\Response
      */
-    public function edit(Election $election,Candidate $candidate)
+    public function edit(Election $election, Candidate $candidate)
     {
         //
         $users = User::count();
@@ -140,7 +148,6 @@ class CandidateController extends Controller
         ];
         // dd($data);
         return view('candidate/edit', compact('data'));
-
     }
 
     /**
@@ -150,10 +157,10 @@ class CandidateController extends Controller
      * @param  \App\Candidate  $candidate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Election $election, Candidate $candidate)
+    public function update(Request $request, Election $election, Candidate $candidate)
     {
         //
-        $this->validate($request,[
+        $this->validate($request, [
             'matric_number' => 'required',
             'candidate_section' => 'required',
             'candidate_motto' => 'required',
@@ -167,8 +174,7 @@ class CandidateController extends Controller
         $candidate->motto = $request->candidate_motto;
         $candidate->update();
 
-        return redirect(route('candidates.index',$election))->with('success','Candidate Successfully Updated');
-
+        return redirect(route('candidates.index', $election))->with('success', 'Candidate Successfully Updated');
     }
 
     /**
@@ -177,11 +183,11 @@ class CandidateController extends Controller
      * @param  \App\Candidate  $candidate
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Election $election ,Candidate $candidate)
+    public function destroy(Election $election, Candidate $candidate)
     {
         //
         $candidate->delete();
-        return redirect()->route('candidates.index',$election)->with('success','Candidate Succesfully Deleted');
+        return redirect()->route('candidates.index', $election)->with('success', 'Candidate Succesfully Deleted');
     }
     public function uploadimage(Request $request)
     {
@@ -190,9 +196,9 @@ class CandidateController extends Controller
 
             $file = $request->file('candidate_image');
             $filename = $file->getClientOriginalName();
-            $folder = uniqid().'-'.now()->timestamp;
-            $file->storeAS('public/TemporaryImage/tmp/'. $folder,$filename);
-            
+            $folder = uniqid() . '-' . now()->timestamp;
+            $file->storeAS('public/TemporaryImage/tmp/' . $folder, $filename);
+
             TemporaryImage::create([
                 'folder' => $folder,
                 'filename' => $filename
@@ -201,7 +207,6 @@ class CandidateController extends Controller
         }
 
         return '';
-
     }
     public function getImage()
     {
@@ -218,6 +223,6 @@ class CandidateController extends Controller
             'Content-disposition' => 'attachment; filename=' . $image->file_name,
             'Access-Control-Expose-Headers' => 'Content-Disposition',
             'Content-Type' => $image->mimetype,
-          ]);
+        ]);
     }
 }
