@@ -20,12 +20,12 @@ class ElectionController extends Controller
         //
         $users = User::count();
         $elections = Election::all();
-        $widget = [
-            'users' => $users,            
-            'elections' => $elections,
-            //...
-        ];
-
+        // $widget = [
+        //     'users' => $users,            
+        //     'elections' => $elections,
+        //     //...
+        // ];
+        // dd($elections);
         return view('election/index', compact('elections'));
     }
 
@@ -60,8 +60,8 @@ class ElectionController extends Controller
 
         $this->validate($request,[
             'election_name' => 'required',
-            'election_start_at' => 'required',
-            'election_end_at' => 'required'
+            'election_start_at' => 'required|date|before:election_end_at',
+            'election_end_at' => 'required|date|after:election_start_at'
         ]);
 
         $election = new Election();
@@ -115,17 +115,19 @@ class ElectionController extends Controller
     public function update(Request $request, Election $election)
     {
         //
+        // dd($request->input());
         $this->validate($request,[
             'election_name' => 'required',
-            'election_start_at' => 'required',
-            'election_end_at' => 'required'
+            'election_start_at' => 'required|date|before:election_end_at',
+            'election_end_at' => 'required|date|after:election_start_at'
         ]);
 
         $election->update(
             [
                 'name'=> $request->election_name,
-                'start_at'=> $request->election_start_at,
-                'end_at'=> $request->election_end_at,
+                // 'start_at'=> $request->election_start_at,
+                'start_at'=> date('Y-m-d H:i', strtotime($request->election_start_at)),
+                'end_at'=> date('Y-m-d H:i', strtotime($request->election_end_at)),
             ]
         );
         return redirect(route('elections.index'))->with('success','Election Successfully Updated');
