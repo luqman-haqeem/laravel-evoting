@@ -71,7 +71,7 @@ class CandidateController extends Controller
     {
         //
         $this->validate($request, [
-            'matric_number' => 'required|integer',
+            'matric_number' => 'required',
             'candidate_section' => 'required|integer',
             'candidate_motto' => 'required|string|max:255',
             'candidate_image' => 'required|mimes:jpeg,png,jpg,gif,svg'
