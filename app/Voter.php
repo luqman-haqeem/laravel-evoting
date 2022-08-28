@@ -11,18 +11,12 @@ class Voter extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'voter_name', 'matric_number', 'faculty'
+        'name', 'matric_number', 'faculties_id','election_id'
     ];
     public function faculty()
     {
         return $this->belongsTo(Faculty::class,'faculties_id');
     }
 
-    public static function  notCandidatefor($election)
-    {
-        $voter = Voter::whereNotIn('id',function($query){
-            $query->selectRaw('voter_id')->where('election_id','=','$election')->from('candidates');
-        } )->get();
-        return $voter;
-    }
+
 }
