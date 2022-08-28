@@ -24,14 +24,12 @@ class CandidateController extends Controller
     {
         //
         $users = User::count();
-        // $candidates = Candidate::all();
         $candidates = Candidate::whereElectionId($election)->get();
-
+        // dd($candidates);
         $data = [
             'users' => $users,
             'candidates' => $candidates,
             'election' => $election,
-            //...
         ];
         // dd($data['candidates']);
         return view('candidate/index', compact('data'));
@@ -46,16 +44,18 @@ class CandidateController extends Controller
     {
         //
         $users = User::count();
-        // $voter = Voter::whereNotIn('id',function($query){
-        //     $query->selectRaw('voter_id')->where('election_id','=','$election')->from('candidates');
-        // } )->get();
-        $voters = Voter::notCandidatefor($election);
+
+        $voters = Voter::query()->where('election_id',$election)->whereNotIn('id',function($query){
+            $query->selectRaw('voter_id')->whereNull('deleted_at')->from('candidates');
+        } )->get();
+
+        
         $data = [
             'users' => $users,
             'election' => $election,
             'voters' => $voters,
+            'sections' => Section::all(),
 
-            //...
         ];
 
         return view('candidate/create', compact('data'));
@@ -71,9 +71,9 @@ class CandidateController extends Controller
     {
         //
         $this->validate($request, [
-            'matric_number' => 'required',
-            'candidate_section' => 'required',
-            'candidate_motto' => 'required',
+            'matric_number' => 'required|integer',
+            'candidate_section' => 'required|integer',
+            'candidate_motto' => 'required|string|max:255',
             'candidate_image' => 'required|mimes:jpeg,png,jpg,gif,svg'
         ]);
 
@@ -83,31 +83,15 @@ class CandidateController extends Controller
         $candidate->section_id = $request->candidate_section;
         $candidate->motto = $request->candidate_motto;
 
-        // $temporaryImage = TemporaryImage::where('folder',$request->candidate_image)->first();
-        // if ($temporaryImage) {
-        //     $tempPath = 'app/public/TemporaryImage/tmp/'. $request->candidate_image . '/' . $temporaryImage->filename;
-
-        //     $permanentImagePath = 'app/public/candidates/'.$temporaryImage->filename;
-        //     $candidate->addMedia(storage_path($tempPath))->toMediaCollection('candidate');
-        //     // Storage::move($tempPath , $permanentImagePath);
-
-        //     // $candidate->image = $permanentImagePath;
-
-        //     rmdir(storage_path('app/public/TemporaryImage/tmp/'. $request->candidate_image));
-        //     $temporaryImage->delete();
-        // }
         if ($request->file('candidate_image')) {
             $file = $request->file('candidate_image');
-            $filename = date('YmdHi') . $file->getClientOriginalName();
-            $file->move(public_path('public/Candidate'), $filename);
+            $extension = $file->getClientOriginalExtension(); 
+            $filename = date('YmdHi_') . $election->id . "_" . $request->matric_number . "." . $extension;
+            $file->move(public_path().'/storage/candidate/', $filename);
             $data['image'] = $filename;
             $candidate->candidate_image = $filename;
         }
-
-
         $candidate->save();
-
-
 
         return redirect(route('candidates.index', $election))->with('success', 'Candidate Successfully Added');
     }
@@ -176,6 +160,40 @@ class CandidateController extends Controller
 
         return redirect(route('candidates.index', $election))->with('success', 'Candidate Successfully Updated');
     }
+    /**
+     * Update the candidate image in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Candidate  $candidate
+     * @return \Illuminate\Http\Response
+     */
+    public function update_image(Request $request, Election $election, Candidate $candidate)
+    {
+        // dd($request);
+
+        $this->validate($request, [
+            'candidate_image' => 'required|image'
+        ]);
+
+        // dd($request);    
+
+        // dd($candidate->candidate_image);
+
+        $old_img_path = public_path().'/storage/candidate/'.$candidate->candidate_image;
+        if (Storage::exists($old_img_path)) {
+            unlink($old_img_path); 
+        }
+        $file = $request->file('candidate_image');
+        $extension = $file->getClientOriginalExtension(); 
+        $filename = date('YmdHi_') . $election->id . "_" . $request->matric_number . "." . $extension;
+        $file->move(public_path().'/storage/candidate/', $filename);
+        $data['image'] = $filename;
+        $candidate->candidate_image = $filename;
+        $candidate->update();
+
+        return redirect()->back()->with('success', 'Candidate Image Successfully Updated');
+        // return redirect(route('candidates.edit', $election))->with('success', 'Candidate Successfully Updated');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -188,41 +206,5 @@ class CandidateController extends Controller
         //
         $candidate->delete();
         return redirect()->route('candidates.index', $election)->with('success', 'Candidate Succesfully Deleted');
-    }
-    public function uploadimage(Request $request)
-    {
-        // store image temporary
-        if ($request->hasFile('candidate_image')) {
-
-            $file = $request->file('candidate_image');
-            $filename = $file->getClientOriginalName();
-            $folder = uniqid() . '-' . now()->timestamp;
-            $file->storeAS('public/TemporaryImage/tmp/' . $folder, $filename);
-
-            TemporaryImage::create([
-                'folder' => $folder,
-                'filename' => $filename
-            ]);
-            return $folder;
-        }
-
-        return '';
-    }
-    public function getImage()
-    {
-
-        $id = $_GET['load'];
-        $cadidate_detail = Candidate::find($id);
-        $image = $cadidate_detail->getMedia('candidate')->first();
-        $imageUrl = $cadidate_detail->getMedia('candidate')->first()->getUrl();
-        // dd($imageUrl);
-        $file_name = array(
-            'file_name' => $image->file_name
-        );
-        return response($file_name)->withHeaders([
-            'Content-disposition' => 'attachment; filename=' . $image->file_name,
-            'Access-Control-Expose-Headers' => 'Content-Disposition',
-            'Content-Type' => $image->mimetype,
-        ]);
     }
 }

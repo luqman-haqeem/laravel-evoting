@@ -8,6 +8,10 @@ use App\Voter;
 use App\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use RahulHaque\Filepond\Facades\Filepond;
+
 
 class VoterController extends Controller
 {
@@ -20,7 +24,7 @@ class VoterController extends Controller
     {
         //
         $users = User::count();
-        $voters = Voter::all();
+        $voters = Voter::where('election_id','=',$election->id)->get();
 
         $data = [
             'users' => $users,
@@ -76,35 +80,50 @@ class VoterController extends Controller
 
     public function import(Request $request, Election $election)
     {
-        //
-
-        $request->validate([
-            'import_voter' => 'required|mimes:csv',
-        ]);
-
         // Set filename
-        $uploadFilename = 'upload_' . auth()->id().'_'.date('Y_m_d');
+        $uploadFilename = 'upload_' . auth()->id() . '_' . date('Y_m_d');
 
         // Move the file to permanent storage
         // Automatic file extension set
-        $fileInfo = Filepond::field($request->avatar)
-            ->moveTo('voterUpload/' . $uploadFilename);
+        $fileInfo = Filepond::field($request->import_voter)
+            ->moveTo('import_voter/' . $uploadFilename);
 
+        if (empty($fileInfo['url'])) {
+            return redirect(route('voters.create', $election->id))->with('success', 'Failed to import file');
+        }
 
+        $total_added = 0;
 
-        // $students = [];
+        if (($open = fopen(public_path() . "/storage/" . $fileInfo['location'], "r")) !== FALSE) {
+            $rows = 0;
+            while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
+                $rows++;
 
-        // if (($open = fopen(storage_path() . "/students.csv", "r")) !== FALSE) {
+                if ($rows == 1) continue; // skip first row
 
-        //     while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
-        //         $students[] = $data;
-        //     }
+                $studentName = $data[0];
+                $studentMatricNumber = $data[1];
+                $studentFaculty = strtoupper($data[2]);
 
-        //     fclose($open);
-        // }
+                $faculty = Faculty::where('name', $studentFaculty)->first();
 
-        // echo "<pre>";
-        // print_r($students);
+                Voter::updateOrCreate(
+                    [
+                        'election_id' => $election->id,
+                        'matric_number' => $studentMatricNumber
+                    ],
+                    [
+                        'name' => $studentName,
+                        'faculties_id' => $faculty->id
+                    ]
+                );
+                $total_added++;
+            }
+
+            fclose($open);
+        }
+
+        return redirect(route('voters.index', $election->id))->with('success', $total_added.' Voter Successfully Imported');
     }
 
     /**
