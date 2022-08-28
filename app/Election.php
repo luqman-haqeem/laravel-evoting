@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Election extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $guarded = [];
 
      /**
      * The attributes that are mass assignable.
