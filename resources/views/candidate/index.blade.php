@@ -23,7 +23,7 @@
 
         <!-- Content Column -->
         <div class="col-lg-12 mb-4">
-            `
+            
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -53,7 +53,7 @@
                                         <form action="{{ route('candidates.delete', ['election' => $data['election'], 'candidate' => $candidate->id]) }}" method="POST">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            <button type="submit" class="btn pt-0"><div class="text-danger"><i class="fas fa-trash"></div></i></button>
                                         </form>
                                     </td>
                                 </tr>

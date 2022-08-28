@@ -31,19 +31,19 @@
 
     <!-- Filepond -->
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-        rel="stylesheet" />
-    <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet" />
+    {{-- <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet" /> --}}
+    
 
+    <link rel='stylesheet' id='flatpickr-style-css'  href='https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css?ver=5.2.4' type='text/css' media='all' />
     @yield('head-script')
 
-    <style>
+    {{-- <style>
         .filepond--root {
             max-height: 10em;
             max-width: 10em;
         }
-
-    </style>
+    </style> --}}
 </head>
 
 <body id="page-top">
@@ -65,15 +65,15 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item {{ Nav::isRoute('home') }}">
+            {{-- <li class="nav-item {{ Nav::isRoute('home') }}">
                 <a class="nav-link" href="{{ route('home') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>{{ __('Dashboard') }}</span></a>
-            </li>
+            </li> --}}
 
             <!-- Nav Item - Election -->
-            <li class="nav-item {{ Nav::isRoute('elections.index') }}">
-                <a class="nav-link" href="{{ route('elections.index') }}">
+            <li class="nav-item {{ Nav::isRoute('home') }}">
+                <a class="nav-link" href="{{ route('home') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>{{ __('Elections') }}</span></a>
             </li>
@@ -82,37 +82,37 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
+            {{-- <!-- Heading -->
             <div class="sidebar-heading">
                 {{ __('Settings') }}
-            </div>
+            </div> --}}
 
             @if (!empty($data['election']))
-                
-            <!-- Nav Item - Eletion Setting -->
-            <li class="nav-item {{ Nav::isRoute('elections.edit') }}">
-                <a class="nav-link" href="{{ route('elections.edit',['election' => $data['election']]) }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>{{ __('Settings') }}</span></a>
-            </li>
-                
-            <!-- Nav Item - Candidate -->
-            <li class="nav-item {{ Nav::isRoute('candidates.index') }}">
-                <a class="nav-link" href="{{ route('candidates.index',['election' => $data['election']]) }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>{{ __('Candidate') }}</span></a>
-            </li>
+                <!-- Nav Item - Eletion Setting -->
+                <li class="nav-item {{ Nav::isRoute('elections.edit') }}">
+                    <a class="nav-link" href="{{ route('elections.edit', ['election' => $data['election']]) }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>{{ __('Settings') }}</span></a>
+                </li>
 
-            <!-- Nav Item - Voter -->
-            <li class="nav-item {{ Nav::isRoute('voters.index') }}">
-                <a class="nav-link" href="{{ route('voters.index',['election' => $data['election']]) }}">
-                    <i class="fas fa-fw fa-hands-helping"></i>
-                    <span>{{ __('Voters') }}</span>
-                </a>
-            </li>
-            @endif
+                <!-- Nav Item - Candidate -->
+                <li class="nav-item {{ Nav::isRoute('candidates.index') }}">
+                    <a class="nav-link" href="{{ route('candidates.index', ['election' => $data['election']]) }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>{{ __('Candidate') }}</span></a>
+                </li>
 
-            {{-- <!-- Nav Item - Profile -->
+                <!-- Nav Item - Voter -->
+                <li class="nav-item {{ Nav::isRoute('voters.index') }}">
+                    <a class="nav-link" href="{{ route('voters.index', ['election' => $data['election']]) }}">
+                        <i class="fas fa-fw fa-hands-helping"></i>
+                        <span>{{ __('Voters') }}</span>
+                    </a>
+                </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                {{-- <!-- Nav Item - Profile -->
             <li class="nav-item {{ Nav::isRoute('profile') }}">
                 <a class="nav-link" href="{{ route('profile') }}">
                     <i class="fas fa-fw fa-user"></i>
@@ -127,12 +127,7 @@
                     <span>{{ __('About') }}</span>
                 </a>
             </li> --}}
-
-            
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+            @endif
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -219,7 +214,8 @@
                                     </div>
                                     <div>
                                         <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <span class="font-weight-bold">A new monthly report is ready to
+                                            download!</span>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -244,7 +240,8 @@
                                         Spending Alert: We've noticed unusually high spending for your account.
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All
+                                    Alerts</a>
                             </div>
                         </li>
 
@@ -264,8 +261,8 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60"
-                                            alt="">
+                                        <img class="rounded-circle"
+                                            src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -276,8 +273,8 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60"
-                                            alt="">
+                                        <img class="rounded-circle"
+                                            src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -288,8 +285,8 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60"
-                                            alt="">
+                                        <img class="rounded-circle"
+                                            src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
@@ -300,8 +297,8 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="">
+                                        <img class="rounded-circle"
+                                            src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div>
@@ -342,7 +339,8 @@
                                     {{ __('Activity Log') }}
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     {{ __('Logout') }}
                                 </a>
@@ -415,22 +413,26 @@
     <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
     <!-- Datatable -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    {{-- <script type="text/javascript" src="pdfmake://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script> --}}
+    {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> --}}
+
     <script type="text/javascript"
         src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.11.4/b-2.2.2/b-html5-2.2.2/b-print-2.2.2/date-1.1.2/fc-4.0.2/fh-3.2.2/r-2.2.9/rg-1.1.4/datatables.min.js">
     </script>
     <!-- Filepond -->
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    {{-- <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
     </script>
     <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script> --}}
+    
+     <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/flatpickr?ver=5.2.4'></script>
 
+     
     <script>
         $(document).ready(function() {
             $('.Mydatatable').DataTable();

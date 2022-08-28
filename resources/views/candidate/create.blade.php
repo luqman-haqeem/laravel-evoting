@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('main-content')
-
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800">{{ __('Add Candidate') }}</h1>
 
@@ -36,90 +35,66 @@
                         @csrf
                         <div class="form-group">
                             <label for="matric_number">Matric Number</label>
-                            <select name="matric_number" id="matric_number" class="form-control" required>
+                            <select name="matric_number" id="matric_number"
+                                class="form-control {{ $errors->has('matric_number') ? 'is-invalid' : '' }}" >
                                 <option value="">Select Matric Number</option>
                                 @foreach ($data['voters'] as $voter)
-                                    <option value="{{ $voter->id }}">{{ $voter->matric_number }}</option>
+                                    <option value="{{ $voter->id }}" {{ old('matric_number') == $voter->id ? 'selected' : '' }}>{{ $voter->matric_number }}</option>
                                 @endforeach
                             </select>
+                            @error('matric_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+
                         </div>
                         <div class="form-group">
                             <label for="candidate_section">Section</label>
-                            <select name="candidate_section" id="candidate_section" class="form-control" required>
-                                <option value="1">General</option>
-                                <option value="2">Faculty</option>
+                            <select name="candidate_section" id="candidate_section"
+                                class="form-control {{ $errors->has('candidate_section') ? 'is-invalid' : '' }}">
+                                @foreach ($data['sections'] as $section)
+                                    <option value="{{ $section->id }}" {{ old('candidate_section') == $section->id ? 'selected' : '' }} > {{ $section->name }}
+                                    </option>
+                                @endforeach
+
                             </select>
+                            @error('candidate_section')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+
                         </div>
                         <div class="form-group">
                             <label for="candidate_motto">Motto</label>
-                            <input type="text" name="candidate_motto" id="candidate_motto" class="form-control" required>
+                            <input type="text" name="candidate_motto" id="candidate_motto"
+                                class="form-control {{ $errors->has('candidate_motto') ? 'is-invalid' : '' }}"
+                                value="{{ old('candidate_motto') }}">
                             @error('candidate_motto')
-                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label for="candidate_image">Candidate Image</label>
-                            <input type="file" name="candidate_image" id="candidate_image" class="filepond" accept="image/png, image/jpeg, image/gif" required>
+                            <input type="file" name="candidate_image" id="candidate_image"
+                                accept="image/png, image/jpeg, image/gif"
+                                class="form-control-file {{ $errors->has('candidate_image') ? 'is-invalid' : '' }}">
                             @error('candidate_image')
-                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+
                         <button type="submit" class="btn btn-primary">Submit</button>
 
                     </form>
                 </div>
+
             </div>
 
 
         </div>
-{{-- 
         @push('scripts')
-            <script>
-                // FilePond.registerPlugin(FilePondPluginImagePreview);
-
-                // const inputElement = document.querySelector('input[id="candidate_image"]');
-                // // create(inputElement, {
-                // //     // Only accept images
-                // //     acceptedFileTypes: ['image/*'],
-                // // });
-                // const pond = FilePond.create(inputElement);
-                FilePond.setOptions({
-                    server: {
-                        url: '/upload',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    }
-                });
-
-                FilePond.registerPlugin(
-                    FilePondPluginFileValidateType,
-                    FilePondPluginImageExifOrientation,
-                    FilePondPluginImagePreview,
-                    FilePondPluginImageCrop,
-                    FilePondPluginImageResize,
-                    FilePondPluginImageTransform,
-                    FilePondPluginImageEdit
-                );
-
-                // Select the file input and use 
-                // create() to turn it into a pond
-                FilePond.create(
-                    document.querySelector('input[id="candidate_image"]'), {
-                        labelIdle: `Drag & Drop your picture or <span class="filepond--label-action">Browse</span>`,
-                        imagePreviewHeight: 170,
-                        imageCropAspectRatio: '1:1',
-                        imageResizeTargetWidth: 200,
-                        imageResizeTargetHeight: 200,
-                        stylePanelLayout: 'compact circle',
-                        styleLoadIndicatorPosition: 'center bottom',
-                        styleProgressIndicatorPosition: 'right bottom',
-                        styleButtonRemoveItemPosition: 'left bottom',
-                        styleButtonProcessItemPosition: 'right bottom',
-                    }
-                );
-            </script>
-        @endpush --}}
+            <script></script>
+        @endpush
 
     </div>
 @endsection

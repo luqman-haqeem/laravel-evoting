@@ -46,12 +46,14 @@
                             <td>{{$voter->name}}</td>
                             <td>{{$voter->faculty->name}}</td>
                             <td>
-                                <a href="{{ route('voters.edit',['election' => $data['election'], 'voter' => $voter->id]) }}" class="btn btn-info btn-sm">Update</a>
-                                <form action="{{ route('voters.destroy',['election' => $data['election'], 'voter' => $voter->id]) }}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                <div class="row">
+                                    <a href="{{ route('voters.edit',['election' => $data['election'], 'voter' => $voter->id]) }}" ><div class="text-success"><i class="fas fa-edit"></i></div></a>
+                                    <form action="{{ route('voters.destroy',['election' => $data['election'], 'voter' => $voter->id]) }}" method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn pt-0"><div class="text-danger"><i class="fas fa-trash"></div></i></button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
