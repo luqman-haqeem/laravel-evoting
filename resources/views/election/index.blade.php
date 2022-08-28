@@ -75,6 +75,8 @@
                                             &nbsp;&nbsp;
                                             <a href="" class="text-success"><i class="fas fa-rocket"></i></a>
                                             &nbsp;&nbsp;
+                                            <a href="" class="text-warning"><i class="fas fa-poll"></i></a>
+                                            &nbsp;&nbsp;
                                             <form action="{{ route('elections.destroy', $election->id) }}" method="POST">
                                                 @method('DELETE')
                                                 @csrf

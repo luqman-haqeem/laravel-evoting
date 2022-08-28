@@ -23,12 +23,19 @@
 
         <!-- Content Column -->
         <div class="col-lg-12 mb-4">
-            
+
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    
-                    <h6 class="m-0 font-weight-bold text-primary">Candidate  <a href="{{ route('candidates.create', $data['election']) }}" class="btn btn-success btn-sm">Add Candidate</a></h6>
+                    <div class="row">
+                        <div class="col align-self-start">
+                            <h6 class="m-0 font-weight-bold text-primary">Candidate </h6>
+                        </div>
+                        <div class="col align-self-end"> 
+                            <a href="{{ route('candidates.create', $data['election']) }}"
+                                class="btn btn-success btn-sm float-right">Add Candidate</a></div>
+                    </div>
+
                 </div>
                 <div class="card-body">
                     <table class="table Mydatatable">
@@ -50,10 +57,14 @@
                                         <a href="{{ route('candidates.edit', ['election' => $data['election'], 'candidate' => $candidate->id]) }}"
                                             class="btn btn-info btn-sm">Update</a>
 
-                                        <form action="{{ route('candidates.delete', ['election' => $data['election'], 'candidate' => $candidate->id]) }}" method="POST">
+                                        <form
+                                            action="{{ route('candidates.delete', ['election' => $data['election'], 'candidate' => $candidate->id]) }}"
+                                            method="POST">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn pt-0"><div class="text-danger"><i class="fas fa-trash"></div></i></button>
+                                            <button type="submit" class="btn pt-0">
+                                                <div class="text-danger"><i class="fas fa-trash"></div></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
