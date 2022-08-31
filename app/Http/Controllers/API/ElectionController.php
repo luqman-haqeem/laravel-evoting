@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Election;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ElectionResource;
+use Validator;
 use Illuminate\Http\Request;
 
 class ElectionController extends Controller
@@ -17,12 +18,23 @@ class ElectionController extends Controller
     public function index()
     {
         $data = Election::latest()->get();
-        return response()->json([ElectionResource::collection($data), 'Programs fetched.']);
+
+        return response()->json([ElectionResource::collection($data)]);
     }
-    
-    public function show(Election $election)
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        # code...
+        $election = Election::find($id);
+        if (is_null($election)) {
+            return response()->json('Data not found', 404); 
+        }
+        return response()->json([new ElectionResource($election)]);
     }
 
 }
