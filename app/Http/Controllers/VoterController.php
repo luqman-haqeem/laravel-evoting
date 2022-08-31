@@ -24,7 +24,7 @@ class VoterController extends Controller
     {
         //
         $users = User::count();
-        $voters = Voter::where('election_id','=',$election->id)->get();
+        $voters = Voter::where('election_id',$election->id)->get();
 
         $data = [
             'users' => $users,
