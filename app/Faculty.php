@@ -15,4 +15,5 @@ class Faculty extends Model
     {
         return $this->hasMany(Voter::class);
     }
+
 }
