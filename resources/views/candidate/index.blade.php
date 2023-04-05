@@ -54,18 +54,19 @@
                                     <td>{{ $candidate->detail->faculty->name }}</td>
                                     <td>{{ $candidate->section->name }}</td>
                                     <td>
-                                        <a href="{{ route('candidates.edit', ['election' => $data['election'], 'candidate' => $candidate->id]) }}"
-                                            class="btn btn-info btn-sm">Update</a>
-
-                                        <form
-                                            action="{{ route('candidates.delete', ['election' => $data['election'], 'candidate' => $candidate->id]) }}"
-                                            method="POST">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn pt-0">
-                                                <div class="text-danger"><i class="fas fa-trash"></div></i>
-                                            </button>
-                                        </form>
+                                        <div class="row">
+                                            <a href="{{ route('candidates.edit', ['election' => $data['election'], 'candidate' => $candidate->id]) }}"><i class="fas fa-edit text-success"></i>
+                                            </a>
+                                            <form
+                                                action="{{ route('candidates.delete', ['election' => $data['election'], 'candidate' => $candidate->id]) }}"
+                                                method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" class="btn pt-0">
+                                                    <div class="text-danger"><i class="fas fa-trash"></div></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

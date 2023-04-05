@@ -63,11 +63,15 @@
                                 <div class="form-group">
                                     <label for="candidate_section">Section</label>
                                     <select name="candidate_section" id="candidate_section" class="form-control">
-                                        <option value="{{ $data['candidate']->section_id }}" selected>
-                                            {{ $data['candidate']->section->name }}</option>
-                                        <option value="1">General</option>
-                                        <option value="2">Faculty</option>
+                                        @foreach ($data['sections'] as $section)
+                                            <option value="{{ $section->id }}"
+                                                {{ $data['candidate']->section_id == $section->id ? 'selected' : '' }}>
+                                                {{ $section->name }}
+                                            </option>
+                                        @endforeach
+
                                     </select>
+
                                 </div>
                             </div>
 
@@ -83,7 +87,7 @@
                             <input type="text" name="candidate_motto" id="candidate_motto" class="form-control"
                                 value="{{ $data['candidate']->motto }}">
                         </div>
-                       
+
                         {{-- <div class="form-group">
                             <label for="candidate_image">Candidate Image</label>
                             <input type="file" name="candidate_image" id="candidate_image" class="form-control-file">
@@ -126,12 +130,13 @@
                                     <input type="hidden" name="_method" value="PUT">
 
                                     <label class="btn btn-primary btn-sm">
-                                        <input id="candidate_image" name="candidate_image" class="custom-file-hidden" type="file" accept="image/*"/>
+                                        <input id="candidate_image" name="candidate_image" class="custom-file-hidden"
+                                            type="file" accept="image/*" />
                                         Change Candidate Image
                                     </label>
                                     @error('candidate_image')
-                                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                                @enderror
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
                                 </form>
                             </div>
                         </div>

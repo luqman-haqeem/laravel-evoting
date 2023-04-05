@@ -23,7 +23,7 @@
 
         <!-- Content Column -->
         <div class="col-lg-12 mb-4">
-            `
+            
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -51,10 +51,9 @@
                             <label for="candidate_section">Section</label>
                             <select name="candidate_section" id="candidate_section"
                                 class="form-control {{ $errors->has('candidate_section') ? 'is-invalid' : '' }}">
-                                @foreach ($data['sections'] as $section)
-                                    <option value="{{ $section->id }}" {{ old('candidate_section') == $section->id ? 'selected' : '' }} > {{ $section->name }}
-                                    </option>
-                                @endforeach
+                                <option value="0" selected disabled>Please Select Section</option>
+                                <option value="1">General</option>
+                                <option value="2">Faculty</option>
 
                             </select>
                             @error('candidate_section')

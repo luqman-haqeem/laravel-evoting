@@ -11,17 +11,26 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 class Candidate extends Model implements HasMedia
 {
-    use HasFactory,SoftDeletes,HasMediaTrait;
+    use HasFactory, SoftDeletes, HasMediaTrait;
+    protected $guarded = [];
+
     protected $fillable = [
         'election_id', 'voter_id', 'section_id', 'motto',
     ];
     public function detail()
     {
-        return $this->belongsTo(Voter::class,'voter_id');
+        return $this->belongsTo(Voter::class, 'voter_id');
     }
     public function section()
     {
-        return $this->belongsTo(Section::class,'section_id');
+        return $this->belongsTo(Section::class, 'section_id');
+    }
+    public function scopeGeneralCandidate($query)
+    {
+        return $query->where('section_id', 1);
+    }
+    public function scopeFacultyCandidate($query)
+    {
+        return $query->where('section_id','!=', 1);
     }
 }
-

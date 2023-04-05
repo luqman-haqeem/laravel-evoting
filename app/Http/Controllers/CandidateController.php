@@ -43,18 +43,15 @@ class CandidateController extends Controller
     public function create($election)
     {
         //
-        $users = User::count();
-
-        $voters = Voter::query()->where('election_id',$election)->whereNotIn('id',function($query){
+        $voters = Voter::query()->where('election_id', $election)->whereNotIn('id', function ($query) {
             $query->selectRaw('voter_id')->whereNull('deleted_at')->from('candidates');
-        } )->get();
+        })->get();
+        $sections = Section::first();
 
-        
         $data = [
-            'users' => $users,
             'election' => $election,
             'voters' => $voters,
-            'sections' => Section::all(),
+            'sections' => $sections,
 
         ];
 
@@ -77,17 +74,28 @@ class CandidateController extends Controller
             'candidate_image' => 'required|mimes:jpeg,png,jpg,gif,svg'
         ]);
 
+        // dd($request->input());
+        $section_id = $request->candidate_section;
+
+        // get section id
+        if ($request->candidate_section == 2) {
+            $candidate = Voter::find($request->matric_number);
+            $section_id = Section::where('name', $candidate->faculty->name)
+                ->first();
+            $section_id = $section_id->id;
+        }
+
         $candidate = new Candidate();
         $candidate->election_id = $election->id;
         $candidate->voter_id = $request->matric_number;
-        $candidate->section_id = $request->candidate_section;
+        $candidate->section_id = $section_id;
         $candidate->motto = $request->candidate_motto;
 
         if ($request->file('candidate_image')) {
             $file = $request->file('candidate_image');
-            $extension = $file->getClientOriginalExtension(); 
+            $extension = $file->getClientOriginalExtension();
             $filename = date('YmdHi_') . $election->id . "_" . $request->matric_number . "." . $extension;
-            $file->move(public_path().'/storage/candidate/', $filename);
+            $file->move(public_path() . '/storage/candidate/', $filename);
             $data['image'] = $filename;
             $candidate->candidate_image = $filename;
         }
@@ -117,17 +125,19 @@ class CandidateController extends Controller
     public function edit(Election $election, Candidate $candidate)
     {
         //
-        $users = User::count();
         // dd($candidate->voter_id);
         // $voter_Id = Candidate::find($candidate->voter_id)->voterId;
         // $section = Section::find($candidate->section_id)->section;
         // $imageUrl = $candidate->getMedia('candidate')->first()->getUrl();
         // $image_detail = $candidate->getMedia('candidate')->first();
 
+        $sections = Section::where('id', '=', 1)
+            ->orWhere('name', $candidate->detail->faculty->name)
+            ->get();
         $data = [
-            'users' => $users,
             'candidate' => $candidate,
             'election' => $election,
+            'sections' => $sections,
             // 'faculty' => $section,
         ];
         // dd($data);
@@ -169,24 +179,19 @@ class CandidateController extends Controller
      */
     public function update_image(Request $request, Election $election, Candidate $candidate)
     {
-        // dd($request);
-
+        
         $this->validate($request, [
             'candidate_image' => 'required|image'
         ]);
 
-        // dd($request);    
-
-        // dd($candidate->candidate_image);
-
-        $old_img_path = public_path().'/storage/candidate/'.$candidate->candidate_image;
+        $old_img_path = public_path() . '/storage/candidate/' . $candidate->candidate_image;
         if (Storage::exists($old_img_path)) {
-            unlink($old_img_path); 
+            unlink($old_img_path);
         }
         $file = $request->file('candidate_image');
-        $extension = $file->getClientOriginalExtension(); 
+        $extension = $file->getClientOriginalExtension();
         $filename = date('YmdHi_') . $election->id . "_" . $request->matric_number . "." . $extension;
-        $file->move(public_path().'/storage/candidate/', $filename);
+        $file->move(public_path() . '/storage/candidate/', $filename);
         $data['image'] = $filename;
         $candidate->candidate_image = $filename;
         $candidate->update();
