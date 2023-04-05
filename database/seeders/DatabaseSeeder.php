@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\User;
 use App\Voter;
 use Database\Seeders\SectionSeeder;
+use Database\Seeders\MaxVoteSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\VoterSeedeer;
 use Illuminate\Support\Facades\Hash;
@@ -92,6 +93,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FacultySeeder::class);
         $this->call(VoterSeedeer::class);
         $this->call(SectionSeeder::class);
+        $this->call(MaxVoteSeeder::class);
         // $this->call(UserSeeder::class);
 
     }

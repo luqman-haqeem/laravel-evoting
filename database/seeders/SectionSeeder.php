@@ -16,11 +16,23 @@ class SectionSeeder extends Seeder
     {
         //
         Section::create([
-            'name' => 'General',
+            'name' => 'GENERAL',
         ]);
 
         Section::create([
-            'name' => 'Faculty',
+            'name' => 'FPM',
+        ]);
+        Section::create([
+            'name' => 'FSTM',
+        ]);
+        Section::create([
+            'name' => 'FPPI',
+        ]);
+        Section::create([
+            'name' => 'FP',
+        ]);
+        Section::create([
+            'name' => 'FSU',
         ]);
 
     }
