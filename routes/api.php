@@ -26,17 +26,22 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group(['middleware' => ['auth:sanctum']], function () {
 
-Route::get('/elections', [ElectionController::class, 'index']);
-Route::get('/elections/{election}', [ElectionController::class, 'show']);
+    Route::get('/profile', function(Request $request) {
+        return auth()->user();
+    });
 
-Route::get('/elections/{election}/candidates', [CandidateController::class, 'index']);
-Route::get('/elections/{election}/candidates/{candidate}', [CandidateController::class, 'show']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-
-
-Route::get('/elections/{election}/voters', [VoterController::class, 'index']);
-Route::get('/elections/{election}/voters/{voter}', [VoterController::class, 'show']);
-
+    Route::get('/elections', [ElectionController::class, 'index']);
+    Route::get('/elections/{election}', [ElectionController::class, 'show']);
+    Route::get('/elections/{election}/candidates', [CandidateController::class, 'index']);
+    Route::get('/elections/{election}/candidates/{candidate}', [CandidateController::class, 'show']);
+    Route::get('/elections/{election}/voters', [VoterController::class, 'index']);
+    Route::get('/elections/{election}/voters/{voter}', [VoterController::class, 'show']);
+    
+    
+});
 
 // Route::resource('elections', App\Http\Controllers\API\ElectionController::class);

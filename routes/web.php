@@ -19,6 +19,13 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+// Route::resource('vote', 'VoteController');
+
+ // Vote
+ Route::get('/elections/{election}/vote', 'VoteController@show')->name('vote.show');
+ Route::put('/elections/{election}/vote', 'VoteController@update')->name('vote.update');
+
+
 Route::middleware(['auth'])->group(function () {
 
 
@@ -41,6 +48,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/elections/{election}/candidates/{candidate}', 'CandidateController@update')->name('candidates.update');
     Route::put('/elections/{election}/candidates-image/{candidate}', 'CandidateController@update_image')->name('candidates.update_image');
     Route::delete('/elections/{election}/candidates/{candidate}', 'CandidateController@destroy')->name('candidates.delete');
+
+    // Faculty
+    Route::get('/elections/{election}/facultys/', 'FacultyController@index')->name('facultys.index');
+    Route::get('/elections/{election}/facultys/{faculty}', 'FacultyController@edit')->name('facultys.edit');
+    Route::put('/elections/{election}/facultys/{faculty}', 'FacultyController@update')->name('facultys.update');
+
 
     // Voter
     Route::get('/elections/{election}/voters/', 'VoterController@index')->name('voters.index');
