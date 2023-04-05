@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Voter extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $guarded = [];
 
     protected $fillable = [
         'name', 'matric_number', 'faculties_id','election_id'
