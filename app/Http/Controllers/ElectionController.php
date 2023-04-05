@@ -4,6 +4,9 @@
 namespace App\Http\Controllers;
 
 use App\Election;
+use App\Faculty;
+use App\MaxVote;
+use App\Section;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -37,14 +40,13 @@ class ElectionController extends Controller
     public function create()
     {
         //
-        $users = User::count();
+        $sections = Section::all();
 
-        $widget = [
-            'users' => $users,
-            //...
+        $data = [
+            'sections' => $sections,
         ];
 
-        return view('election/create', compact('widget'));
+        return view('election/create', compact('data'));
     }
 
     /**
@@ -56,22 +58,36 @@ class ElectionController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request->all());
-
-        $this->validate($request,[
+        // dd($request->input());
+        $this->validate($request, [
             'election_name' => 'required',
-            'election_start_at' => 'required|date|before:election_end_at',
-            'election_end_at' => 'required|date|after:election_start_at'
+            'date_range' => 'required',
+            'GENERAL' => 'required|integer|min:1|max:99',
+            'FPM' => 'required|integer|min:1|max:99',
+            'FSTM' => 'required|integer|min:1|max:99',
+            'FPPI' => 'required|integer|min:1|max:99',
+            'FP' => 'required|integer|min:1|max:99',
+            'FSU' => 'required|integer|min:1|max:99',
         ]);
+        $date_range = explode(' - ', $request->date_range);
 
         $election = new Election();
 
         $election->name = $request->election_name;
-        $election->start_at = $request->election_start_at;
-        $election->end_at = $request->election_end_at;
+        $election->start_at = date('Y-m-d H:i:s', strtotime($date_range[0]));
+        $election->end_at = date('Y-m-d H:i:s', strtotime($date_range[1]));
         $election->save();
 
-        return redirect(route('elections.index'))->with('success','Election Successfully Added');
+        // update max voter
+        $sections  = Section::all();
+        foreach ($sections as $section) {
+            $maxvVote = MaxVote::updateOrCreate(
+                ['election_id' => $election->id, 'sections_id' => $section->id],
+                ['max_votes' => $request->input(strtoupper($section->name))]
+            );
+        }
+
+        return redirect(route('elections.index'))->with('success', 'Election Successfully Added');
     }
 
     /**
@@ -94,14 +110,14 @@ class ElectionController extends Controller
     public function edit(Election $election)
     {
         //
-        $users = User::count();
+        $sectionWithMaxVote = Section::where('max_votes.election_id', $election->id)->join('max_votes', 'sections.id', '=', 'max_votes.sections_id')->get();
+        // dd($sectionWithMaxVote[0]->max_votes);
         // $election_detail = Election::find($election);
         $data = [
-            'users' => $users,
+            'sections' => $sectionWithMaxVote,
             'election' => $election,
-            //...
         ];
-
+        // dd($data['MaxVote']);
         return view('election/edit', compact('data'));
     }
 
@@ -116,22 +132,40 @@ class ElectionController extends Controller
     {
         //
         // dd($request->input());
-        $this->validate($request,[
+        $this->validate($request, [
             'election_name' => 'required',
-            'election_start_at' => 'required|date|before:election_end_at',
-            'election_end_at' => 'required|date|after:election_start_at'
+            'date_range'    => 'required',
+            'GENERAL'       => 'required|integer|min:1|max:99',
+            'FPM'           => 'required|integer|min:1|max:99',
+            'FSTM'          => 'required|integer|min:1|max:99',
+            'FPPI'          => 'required|integer|min:1|max:99',
+            'FP'            => 'required|integer|min:1|max:99',
+            'FSU'           => 'required|integer|min:1|max:99',
         ]);
+
+        // dd($request->input());
+
+        $date_range = explode(' - ', $request->date_range);
 
         $election->update(
             [
-                'name'=> $request->election_name,
+                'name' => $request->election_name,
                 // 'start_at'=> $request->election_start_at,
-                'start_at'=> date('Y-m-d H:i', strtotime($request->election_start_at)),
-                'end_at'=> date('Y-m-d H:i', strtotime($request->election_end_at)),
+                'start_at' => date('Y-m-d H:i:s', strtotime($date_range[0])),
+                'end_at' => date('Y-m-d H:i:s', strtotime($date_range[1])),
             ]
         );
-        return redirect(route('elections.index'))->with('success','Election Successfully Updated');
 
+        // update max voter
+        $sections  = Section::all();
+        foreach ($sections as $section) {
+            $maxvVote = MaxVote::updateOrCreate(
+                ['election_id' => $election->id, 'sections_id' => $section->id],
+                ['max_votes' => $request->input(strtoupper($section->name))]
+            );
+        }
+
+        return redirect(route('elections.index'))->with('success', 'Election Successfully Updated');
     }
 
     /**
@@ -144,6 +178,6 @@ class ElectionController extends Controller
     {
         //
         $election->delete();
-        return redirect()->route('elections.index')->with('success','Election Succesfully Deleted');
+        return redirect()->route('elections.index')->with('success', 'Election Succesfully Deleted');
     }
 }

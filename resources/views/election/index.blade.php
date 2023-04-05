@@ -31,7 +31,8 @@
                         <div class="col align-self-start">
                             <h6 class="m-0 font-weight-bold text-primary">Election</h6>
                         </div>
-                        <div class="col align-self-end"><a href="{{ route('elections.create') }}" class="btn btn-success btn-sm float-right">Add Election</a></div>
+                        <div class="col align-self-end"><a href="{{ route('elections.create') }}"
+                                class="btn btn-success btn-sm float-right">Add Election</a></div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -51,16 +52,16 @@
                             @foreach ($elections as $election)
                                 <tr>
                                     <td>{{ $election->name }}</td>
-                                    <td>{{ $election->start_at }}</td>
-                                    <td>{{ $election->end_at }}</td>
+                                    <td>{{ date('d M Y h:i A', strtotime($election->start_at)) }}</td>
+                                    <td>{{ date('d M Y h:i A', strtotime($election->end_at)) }}</td>
                                     <td>
                                         @php
                                             if (date('Y-m-d H:i:s') > $election->end_at) {
-                                                echo "Ended";
-                                            } else if( ( date('Y-m-d H:i:s')) > $election->start_at){
-                                                echo "Started";
-                                            }else{
-                                                echo "Pending";
+                                                echo 'Ended';
+                                            } elseif (date('Y-m-d H:i:s') > $election->start_at) {
+                                                echo 'Started';
+                                            } else {
+                                                echo 'Pending';
                                             }
                                         @endphp
 
